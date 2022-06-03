@@ -1,15 +1,11 @@
 import React from 'react'
-import { RegisterScreen } from './components/screens/RegisterScreen'
-//import { LoginScreen } from './components/screens/LoginScreen'
-//import { LugaresScreen } from './components/screens/LugaresScreen'
-
+import { AppRouter } from './routers/AppRouter'
 
 export const LugaresApp = () => {
   return (
     <div>
         
-    
-        <RegisterScreen/>
+        <AppRouter/>
     </div>
   )
 }
