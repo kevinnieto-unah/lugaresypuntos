@@ -3,6 +3,7 @@ import {  BrowserRouter as Router ,Route, Routes } from 'react-router-dom'
 import { LoginScreen } from '../components/auth/LoginScreen'
 import { LugaresScreen } from '../components/screens/LugaresScreen'
 import { RegisterScreen } from '../components/auth/RegisterScreen'
+import { PuntosScreen } from '../components/screens/PuntosScreen'
 
 
 export const AppRouter = () => {
@@ -21,6 +22,9 @@ export const AppRouter = () => {
                         />
                         <Route exact path='/' 
                           element={<LugaresScreen/>  }                      
+                        />
+                        <Route exact path='/puntos' 
+                          element={<PuntosScreen/>  }                      
                         />
                     </Routes>
                     </div>

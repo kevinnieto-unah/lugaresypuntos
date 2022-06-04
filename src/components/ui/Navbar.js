@@ -1,12 +1,11 @@
 import React from 'react'
 import { Disclosure } from '@headlessui/react'
 import { LogoutIcon } from '@heroicons/react/outline'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 export const Navbar = () => {
     const navigate = useNavigate()
-
     const handleLogout = (e) => {
         e.preventDefault()
         navigate('/login')
@@ -24,6 +23,28 @@ export const Navbar = () => {
                 </span>
             
               </div>
+              <div className='flex-1 flex items-center justify-start sm:items-stretch sm:justify-start'>
+                  <div className=" hidden sm:block sm:ml-6 justify-center">
+                      <div className="flex space-x-4">
+                          <Link
+                            to="/"
+                            className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-medium ' 
+                            >
+                            Lugares
+                          </Link>
+                      </div>
+                    </div>
+                  <div className=" hidden sm:block sm:ml-6 justify-center">
+                      <div className="flex space-x-4">
+                          <Link
+                            to="/puntos"
+                            className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-medium ' 
+                            >
+                            Puntos de referencia
+                          </Link>
+                      </div>
+                    </div>
+              </div>
 
               
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -39,8 +60,7 @@ export const Navbar = () => {
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                   onClick={handleLogout}
                 >
-                  <LogoutIcon className="h-6 w-6" aria-hidden="true" />
-                  
+                  <LogoutIcon className="h-6 w-6" aria-hidden="true" />  
                 </button>
 
                 
