@@ -4,6 +4,7 @@ import { LoginScreen } from '../components/auth/LoginScreen'
 import { LugaresScreen } from '../components/screens/LugaresScreen'
 import { RegisterScreen } from '../components/auth/RegisterScreen'
 import { PuntosScreen } from '../components/screens/PuntosScreen'
+import { InformacionLugarScreen } from '../components/screens/InformacionLugarScreen'
 
 
 export const AppRouter = () => {
@@ -25,6 +26,9 @@ export const AppRouter = () => {
                         />
                         <Route exact path='/puntos' 
                           element={<PuntosScreen/>  }                      
+                        />
+                        <Route exact path='/informacion/:id' 
+                          element={<InformacionLugarScreen/>  }                       
                         />
                     </Routes>
                     </div>
