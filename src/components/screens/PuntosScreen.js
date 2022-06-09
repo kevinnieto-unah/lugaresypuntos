@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navbar } from '../ui/Navbar'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,40 +9,101 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { PlusIcon } from '@heroicons/react/outline'
-import { useForm } from '../../hooks/UseForm';
-import { Acciones } from '../Tablas/Acciones';
 
-const  createData = (
- id, nombre, latitud, longitud
-) => {
-  return {id, nombre, latitud, longitud };
+import { AccionesPuntos } from '../Tablas/AccionesPuntos';
+//import { puntoSetActive } from '../../actions/puntos'
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { eventClearActivePunto, puntoAddNew, puntoUpdated} from '../../actions/puntos';
+import { BannerEdit } from '../ui/BannerEdit';
+import Swal from 'sweetalert2';
+// import { SinRegistros } from './SinRegistros';
+
+
+
+const initPunto = {
+  nombre: '',
+  latitud: '',
+  longitud: ''
 }
-
-const rows = [
-  createData(1,'Colonia Kennedy', '-34.9087', '-56.1714' ),
-  createData(2,'Colonia Kennedy', '-34.9087', '-56.1714'),
-  createData(3,'Colonia Kennedy', '-34.9087', '-56.1714'),
-  createData(4,'Colonia Kennedy', '-34.9087', '-56.1714'),
-  createData(5,'Colonia Kennedy', '-34.9087', '-56.1714'),
-];
 
 
 export const PuntosScreen = () => {
-  const [formValues, handleInputChange] = useForm('', '', '', '');
-  const {nombre, latitud,longitud} = formValues;
-  const handleNuevoPunto = (e) => {
-    e.preventDefault()
-    createData(6, nombre, latitud,longitud)
+    const { activePunto } = useSelector( state => state.puntos );
+    const { puntos } = useSelector( state => state.puntos ); 
+    const [formValues, setFormValues] = useState( initPunto);
+    const dispatch = useDispatch();
+    const {nombre, latitud,longitud } = formValues;
 
+      //ACTUALIZAR EVENTO
+      useEffect(() => {
+       if ( activePunto ) {
+         console.log(activePunto);
+         setFormValues( activePunto );
+       } else {
+         setFormValues( initPunto );
+       }
+   }, [activePunto, setFormValues])
+
+  //FUNCION PARA AGREGAR CAMBIOS
+    const handleNuevoPunto = (e) => {
+
+      
+      e.preventDefault()
+     
+      if ( activePunto ) {
+        dispatch( puntoUpdated( formValues ) )
+        dispatch( eventClearActivePunto() );
+        Swal.fire(
+          'Punto actualizado con exito!',
+          'Your file has been deleted.',
+          'success'
+        )
+    } else {
+      Swal.fire({
+        title: '¿Deseas guardar los cambios?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Punto creado con exito!',
+            'Your file has been deleted.',
+            'success'
+          )
+          dispatch( puntoAddNew({
+            ...formValues,
+            id: new Date().getTime(),
+          }) );
+        }
+        
+      })
+        
+        
+    }
+    }
+
+   
+     
+
+  
+  const handleInputChange = ({ target }) => {
+    setFormValues({
+        ...formValues,
+        [target.name]: target.value
+    });
 }
+
+
+// }
   // const handleDelete = (e) => {
   //   e.preventDefault()
   //   console.log('delete')
   // }
-  // const handleEdit = (e) => {
-  //   e.preventDefault()
-  //   console.log('edit')
-  // }
+
 
   return (
     <>
@@ -52,45 +113,53 @@ export const PuntosScreen = () => {
                 Puntos de Referencia
             </h1>
         </div>
-    
-        <div className='pt-10 flex justify-center max-w-5xl mx-auto'>
+        { (activePunto)? <BannerEdit/> : 
+          <div className='pt-5 flex justify-center items-start'>
+              <h1 className="text-md leading-6 font-sm text-gray-900">
+                  Ingresa los datos del nuevo Punto de Referencia
+              </h1> 
+          </div>
+        } 
+        
+        <form className='pt-5 flex justify-center max-w-5xl mx-auto' onSubmit={handleNuevoPunto}>
                     <input
-                      id="nombre"
-                      name="nombre"
+                      value={nombre}
+                      name='nombre'
                       type="text"
                       required
-                      className=" mr-1 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                      className={`mr-1 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm `}
                       placeholder="Nombre"
                       onChange={handleInputChange}
                      />
                     <input
-                      id="latitud"
-                      name="latitud"
+                      value={latitud}
+                      name='latitud'
                       type="text"
                       required
-                      className="mr-1 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                      className={`mr-1 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                       placeholder="Latitud"
                       onChange={handleInputChange}
                      />
                     <input
-                      id="Longitud"
-                      name="Longitud"
+                      value={longitud}
+                      name='longitud'
                       type="text"
                       required
-                      className="mr-1 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                      className={`mr-1 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm `}
                       placeholder="Longitud"
                       onChange={handleInputChange}
                      />
                       <button
-                            onClick={handleNuevoPunto}
+                            
+                            type="submit"
                             className="bg-green-500 hover:bg-green-700 text-white text-sm font-bold py-2 px-4 mr-1 ml-1 rounded"
                       >
                             <PlusIcon className="h-4 w-4" aria-hidden="true" />
                       </button>
 
-        </div>
+        </form>
         <div className='pt-3 flex justify-center max-w-5xl mx-auto'>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} >
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
@@ -100,8 +169,12 @@ export const PuntosScreen = () => {
                     <TableCell align="left">Accion</TableCell>
                   </TableRow>
                 </TableHead>
+                
                 <TableBody>
-                  {rows.map((row) => (
+                  {/* Componente cuando la tabla esta vacia */}
+                  {/* <SinRegistros/> */}
+                  
+                  {puntos.map((row) => (
                     <TableRow
                       key={row.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -111,7 +184,33 @@ export const PuntosScreen = () => {
                       </TableCell>
                       <TableCell align="left">{row.latitud} </TableCell>
                       <TableCell align="left">{row.longitud}</TableCell>
-                      <Acciones/>
+                      <AccionesPuntos row={row}/>
+                      
+                      {/* <TableCell align="left">
+                          <button
+                            type="button"
+                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-1 rounded"
+                          >
+                            <InformationCircleIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 mr-1 rounded"
+                            onClick={handleEdit(row)}
+                            
+                          >
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                            
+                          </button>
+                          <button
+                            type="button"
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                            
+                          >
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+
+                      </TableCell> */}
                       
                     </TableRow>
                   ))}
