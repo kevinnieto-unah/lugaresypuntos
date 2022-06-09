@@ -17,7 +17,6 @@ import { useDispatch } from 'react-redux';
 import { eventClearActivePunto, puntoAddNew, puntoUpdated} from '../../actions/puntos';
 import { BannerEdit } from '../ui/BannerEdit';
 import Swal from 'sweetalert2';
-// import { SinRegistros } from './SinRegistros';
 
 
 
@@ -29,6 +28,7 @@ const initPunto = {
 
 
 export const PuntosScreen = () => {
+  //DECLARACION DE VARIABLES
     const { activePunto } = useSelector( state => state.puntos );
     const { puntos } = useSelector( state => state.puntos ); 
     const [formValues, setFormValues] = useState( initPunto);
@@ -86,16 +86,16 @@ export const PuntosScreen = () => {
     }
     }
 
-   
-     
-
-  
+  //FUNCION MANEJADORA DE CAMPOS DEL FORMULARIO
   const handleInputChange = ({ target }) => {
     setFormValues({
         ...formValues,
         [target.name]: target.value
     });
 }
+
+
+  
 
 
 // }
@@ -121,6 +121,8 @@ export const PuntosScreen = () => {
           </div>
         } 
         
+
+        {/* FORMULARIO PARA CREAR  Y EDITAR PUNTOS */}
         <form className='pt-5 flex justify-center max-w-5xl mx-auto' onSubmit={handleNuevoPunto}>
                     <input
                       value={nombre}
@@ -158,6 +160,10 @@ export const PuntosScreen = () => {
                       </button>
 
         </form>
+
+
+
+        {/* DIV QUE CONTIENE LA TABLA */}
         <div className='pt-3 flex justify-center max-w-5xl mx-auto'>
             <TableContainer component={Paper} >
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -170,11 +176,16 @@ export const PuntosScreen = () => {
                   </TableRow>
                 </TableHead>
                 
+                {/* DESPLIEGUE DE LA TABLA */}
                 <TableBody>
                   {/* Componente cuando la tabla esta vacia */}
                   {/* <SinRegistros/> */}
                   
-                  {puntos.map((row) => (
+                  {
+       
+                     
+                  
+                  puntos.map((row) => (
                     <TableRow
                       key={row.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -186,34 +197,14 @@ export const PuntosScreen = () => {
                       <TableCell align="left">{row.longitud}</TableCell>
                       <AccionesPuntos row={row}/>
                       
-                      {/* <TableCell align="left">
-                          <button
-                            type="button"
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-1 rounded"
-                          >
-                            <InformationCircleIcon className="h-4 w-4" aria-hidden="true" />
-                          </button>
-                          <button
-                            type="button"
-                            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 mr-1 rounded"
-                            onClick={handleEdit(row)}
-                            
-                          >
-                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
-                            
-                          </button>
-                          <button
-                            type="button"
-                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                            
-                          >
-                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
-                          </button>
-
-                      </TableCell> */}
+                     
                       
                     </TableRow>
-                  ))}
+
+                  ))
+                
+                
+                }
                 </TableBody>
               </Table>
             </TableContainer>

@@ -19,4 +19,4 @@ export const puntoUpdated = ( punto ) => ({
 
 export const eventClearActivePunto = () => ({ type: types.eventClearActivePunto });
 
-export const puntoDeleted = () => ({ type: types.puntoDeleted });
+export const puntoDeleted = (punto) => ({ type: types.puntoDeleted });

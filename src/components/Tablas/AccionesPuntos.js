@@ -3,7 +3,7 @@ import { TableCell } from '@mui/material'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
-import { puntoSetActive } from '../../actions/puntos'
+import {  puntoDeleted, puntoSetActive } from '../../actions/puntos'
 
 export const AccionesPuntos = ({row}) => {
 
@@ -27,7 +27,19 @@ export const AccionesPuntos = ({row}) => {
       })
       
       
-}
+    }
+
+    const handleDelete = (e) => {
+      e.preventDefault()
+      console.log(row);
+      dispatch( puntoSetActive(row) ) 
+      dispatch( puntoDeleted( ))
+
+
+      
+       
+    } 
+      
 
   return (
     <TableCell align="left">
@@ -48,6 +60,7 @@ export const AccionesPuntos = ({row}) => {
                           <button
                             type="button"
                             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                            onClick={handleDelete}
                             
                           >
                             <TrashIcon className="h-4 w-4" aria-hidden="true" />

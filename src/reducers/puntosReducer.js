@@ -41,6 +41,17 @@ export const puntosReducer =(state=initialState,action)=>{
                 )
             }
         
+        case types.puntoDeleted:
+            return {
+                ...state,
+                puntos: state.puntos.filter(
+                    e => ( e.id !== state.activePunto.id )
+                ),
+                activePunto: null
+            }
+
+        
+        
         
         default:
             return state
