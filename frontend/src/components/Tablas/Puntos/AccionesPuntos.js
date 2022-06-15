@@ -3,7 +3,7 @@ import { TableCell } from '@mui/material'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
-import {  puntoDeleted, puntoSetActive } from '../../actions/puntos'
+import {  puntoDeleted, puntoSetActive } from '../../../actions/puntos'
 
 export const AccionesPuntos = ({row}) => {
 
@@ -31,12 +31,27 @@ export const AccionesPuntos = ({row}) => {
 
     const handleDelete = (e) => {
       e.preventDefault()
-      console.log(row);
-      dispatch( puntoSetActive(row) ) 
-      dispatch( puntoDeleted( ))
-
-
-      
+      Swal.fire({
+        title: '¿Deseas eliminar este punto?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Punto eliminado con exito con exito!',
+            '',
+            'success'
+          )
+          
+          
+          dispatch( puntoSetActive(row) ) 
+          dispatch( puntoDeleted( ))
+        }
+        
+      })
        
     } 
       

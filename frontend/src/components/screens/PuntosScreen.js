@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { PlusIcon } from '@heroicons/react/outline'
 
-import { AccionesPuntos } from '../Tablas/AccionesPuntos';
+import { AccionesPuntos } from '../Tablas/Puntos/AccionesPuntos';
 //import { puntoSetActive } from '../../actions/puntos'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -56,7 +56,7 @@ export const PuntosScreen = () => {
         dispatch( eventClearActivePunto() );
         Swal.fire(
           'Punto actualizado con exito!',
-          'Your file has been deleted.',
+          '',
           'success'
         )
     } else {
@@ -71,13 +71,14 @@ export const PuntosScreen = () => {
         if (result.isConfirmed) {
           Swal.fire(
             'Punto creado con exito!',
-            'Your file has been deleted.',
+            '',
             'success'
           )
           dispatch( puntoAddNew({
             ...formValues,
             id: new Date().getTime(),
           }) );
+          setFormValues( initPunto );
         }
         
       })

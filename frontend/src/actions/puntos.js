@@ -10,6 +10,11 @@ export const puntoSetActive = (punto) => ({
   type: types.puntoSetActive,
   payload: punto
 });
+export const addPuntosDelLugar = (punto) => ({
+  type: types.addPuntosDelLugar,
+  payload: punto
+});
+export const deletePuntosDelLugar = (punto) => ({ type: types.deletePuntosDelLugar });
 
 export const puntoUpdated = ( punto ) => ({
   type: types.puntoUpdated,

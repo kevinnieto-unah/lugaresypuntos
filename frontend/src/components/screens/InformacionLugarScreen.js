@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { TablaDePuntos } from '../Tablas/TablaDePuntos'
+import { TablaDePuntos } from '../Tablas/Puntos/TablaDePuntos';
 import { Navbar } from '../ui/Navbar'
 
 export const InformacionLugarScreen = () => {

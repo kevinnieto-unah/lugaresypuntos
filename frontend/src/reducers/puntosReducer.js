@@ -9,7 +9,8 @@ const initialState ={
             longitud: '-99.1'
         },
     ],
-    activePunto: null
+    activePunto: null,
+    puntosLugar: [],
 }
 
 export const puntosReducer =(state=initialState,action)=>{
@@ -20,6 +21,23 @@ export const puntosReducer =(state=initialState,action)=>{
                 ...state,
                 activePunto: action.payload
             }
+        case types.addPuntosDelLugar:
+            return {
+                ...state,
+                puntosLugar: [action.payload, ...state.puntosLugar ]
+              
+            }
+
+        case types.deletePuntosDelLugar:
+            return {
+                ...state,
+                puntosLugar: state.puntosLugar.filter(
+                    e => ( e.id !== state.activePunto.id )
+                ),
+                activePunto: null
+            }
+
+
         case  types.puntoAddNew:
             return {
                 ...state,
@@ -49,6 +67,7 @@ export const puntosReducer =(state=initialState,action)=>{
                 ),
                 activePunto: null
             }
+        
 
         
         

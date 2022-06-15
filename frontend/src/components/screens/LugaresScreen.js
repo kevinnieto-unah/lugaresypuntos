@@ -4,10 +4,11 @@ import {
   PlusIcon,
 } from "@heroicons/react/outline";
 import { Modal } from "../modals/Modal";
-import { uiOpenModal } from "../../actions/ui";
+
 import { useDispatch } from "react-redux";
 import { Buscador } from "../ui/Buscador";
-import { TablaPrincipal } from "../Tablas/TablaPrincipal";
+import { TablaPrincipal } from "../Tablas/Lugares/TablaPrincipal";
+import { uiOpenModal } from "../../actions/ui";
 
 
 export const LugaresScreen = () => {
