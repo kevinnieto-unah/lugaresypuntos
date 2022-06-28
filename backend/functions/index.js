@@ -159,7 +159,7 @@ exports.newLugar = functions.https.onRequest( (request, response) => {
         });
     })
       
-      return response.status(200).send({ ok: true, msg: "Peticion logro terminar" });
+      return response.status(200).send({ ok: true, msg: "Lugar creado con exito" });
     } catch (error) {
       console.log(error);
       response.status(500).send({ ok: false, msg:"Hubo problemas para guardar el punto" });
@@ -310,59 +310,79 @@ exports.buscarLugarPorTipo = functions.https.onRequest( (request, response) => {
 
 //ACTUALIZAR LUGAR
 exports.updateLugar = functions.https.onRequest( (request, response) => {
+  (async () => {
   // Extrae el id del path
   const extractor = request.params[0]
   // Le quita el / del inicio
   const id= extractor.split("/")[1]
+  const document = db.collection("lugares").doc(id);
   const {nombre, latitud, longitud, rango, tipo, disponibilidad, puntosDeReferencia} = request.body;
-  (async () => {
       try {
-        const document = db.collection("lugares").doc(id);
-        await document.update({
-          nombre: nombre,
-          latitud: latitud,
-          longitud: longitud,
-          rango: rango,
-          tipo: tipo,
-          disponibilidad: disponibilidad,
-        
-        });
-        actualizarPuntosDeReferencia(id,puntosDeReferencia)
+         deletePuntosDeReferencia(id);
+         numeroDePuntos = puntosDeReferencia.length; 
+         await document.update({
+            nombre: nombre,
+            latitud: latitud,
+            longitud: longitud,
+            rango: rango,
+            tipo: tipo,
+            disponibilidad: disponibilidad,
+            numeroDePuntos: numeroDePuntos,
+          });
+
+         renovarPuntosDeReferencia(id,puntosDeReferencia)
       
-        return response.status(200).send({ ok: true, msg:"La peticion se completo" });
+        return response.status(200).send({ ok: true, msg:"Lugar actualizado con exito" });
       } catch (error) {
         console.log(error);
         response.status(500).send({ ok: false, msg:"Hubo problemas para actualizar el lugar" });
       }
     })();
-});
-function actualizarPuntosDeReferencia(id,arreglo) {
-  
-  (async () => {
-    console.log(id);
-    const doc =db.collection(`lugares/${id}/puntosDeReferencia`).doc()
-    await doc.delete()
-    // arreglo.map((row) => {
-    //   db.collection(`lugares/${id}/puntosDeReferencia`).doc(row.id).create({
-    //     nombre: row.nombre,
-    //     latitud: row.latitud,
-    //     longitud: row.longitud,
 
-    //   });
-    // })
+});
+
+//TO DO 
+function renovarPuntosDeReferencia(id,arreglo) {
+  arreglo.map((row) => {
+    db.collection(`lugares/${id}/puntosDeReferencia`).doc(row.id).set({
+      nombre: row.nombre,
+      latitud: row.latitud,
+      longitud: row.longitud,
+    });
+  })
+}
+
+
+function deletePuntosDeReferencia(id) {
+  (async () => {
+    try {
+      const doc = db.collection(`lugares/${id}/puntosDeReferencia`)
+      const querySnapshot = await doc.get();
+      let docs = querySnapshot.docs;
+
+      docs.map((doc) => (
+        db.collection(`lugares/${id}/puntosDeReferencia`).doc(doc.id).delete()
+      ));
+   
+      
+    } catch (error) {
+      console.log(error);
+    }
+
+     
   })();
 }
 
-//ELIMINAR PUNTO
+//ELIMINAR LUGAR
 exports.deleteLugar = functions.https.onRequest( (request, response) => {
-  // Extrae el id del path
-  const extractor = request.params[0]
-  // Le quita el / del inicio
-  const id= extractor.split("/")[1]
-  console.log(id);
-
   //Funcion para eliminar un punto
   (async () => {
+    const extractor = request.params[0]
+    // Le quita el / del inicio
+    const id= extractor.split("/")[1]
+    console.log(id);
+    deletePuntosDeReferencia(id);
+
       try {
         const doc = db.collection("lugares").doc(id);
         await doc.delete();
