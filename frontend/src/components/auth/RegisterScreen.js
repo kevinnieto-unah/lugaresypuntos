@@ -1,8 +1,51 @@
 import { LockClosedIcon } from "@heroicons/react/outline";
 import React from "react";
+import { useForm } from '../../hooks/UseForm'
+import validator from 'validator';
+import { useDispatch} from 'react-redux';
 import { Link } from "react-router-dom";
+import {  starRegisterWithEmailPasswordName} from "../../actions/auth";
 
 export const RegisterScreen = () => {
+  const dispatch =useDispatch()
+  
+    const [formValues, handleInputChange]=useForm({
+        name:'Hernando',
+        email: 'nando@gmail.com',
+        password: '12345',
+        password2: '12345'
+
+    })
+
+    const {name, email, password, password2}= formValues;
+    const handleRegister =(e)=>{
+      e.preventDefault();
+      console.log(name, email, password, password2) 
+      if (isFormValid()) {
+           console.log('Formulario Correcto');
+           console.log(name, email, password, password2);
+           dispatch(starRegisterWithEmailPasswordName(name, email, password, password2)) //El orden de como pasas las variables importa OJOOO!
+      }
+  }
+
+  const isFormValid = ()=> {
+    if(name.trim().length===0){
+        console.log('Name is required');
+        return false
+    }else if(!validator.isEmail(email)){
+        console.log('Email is not valid');
+        return false
+
+    }else if( password !== password2   || password.length <5){
+
+        console.log('Password should be at least 6 characters and match each other');
+        return false
+    }
+
+    return true
+}
+
+
   return (
     <>
       {/*
@@ -25,7 +68,7 @@ export const RegisterScreen = () => {
               Registrarse
             </h2>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form className="mt-8 space-y-6" onSubmit={handleRegister}>
             <input type="hidden" name="remember" defaultValue="true" />
 
             <div className="rounded-md shadow-sm -space-y-px">
@@ -35,13 +78,14 @@ export const RegisterScreen = () => {
               <div>
                 <label className="sr-only">Nombre</label>
                 <input
-                  id="name"
                   name="name"
-                  type="name"
+                  type="text"
                   autoComplete="Nombre"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Nombre"
+                  onChange={handleInputChange}
+                  value={name}
                 />
               </div>
               <div className="pt-5">
@@ -52,13 +96,15 @@ export const RegisterScreen = () => {
                   Email address
                 </label>
                 <input
-                  id="email-address"
                   name="email"
                   type="email"
                   autoComplete="email"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
+                  onChange={handleInputChange}
+                  value={email}
+
                 />
               </div>
 
@@ -70,13 +116,14 @@ export const RegisterScreen = () => {
                   Password
                 </label>
                 <input
-                  id="password"
                   name="password"
                   type="password"
                   autoComplete="current-password"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
+                  onChange={handleInputChange}
+                  value={password}
                 />
               </div>
 
@@ -88,19 +135,21 @@ export const RegisterScreen = () => {
                   Confirmar Password
                 </label>
                 <input
-                  id="password"
-                  name="password"
+       
+                  name="password2"
                   type="password"
                   autoComplete="current-password"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
+                  onChange={handleInputChange}
+                  value={password2}
                 />
               </div>
             </div>
 
             <div className=" text-center text-gray-500 underline">
-              <Link to="/login">Ya tienes una cuenta?</Link>
+              <Link to="/auth/login">Ya tienes una cuenta?</Link>
             </div>
 
             <div>

@@ -24,4 +24,18 @@ export const types = {
     lugarUpdated: '[Lugares] Update lugar',
     lugarDeleted: '[Lugares] Delete lugar',
     lugaresLogoutCleaning: '[Lugares] Logout Cleaning',
+
+
+
+
+        //Tipos del loading
+        uiStartLoading: '[UI] Start loading',
+        uiFinishLoading: '[UI] Finish loading',
+
+        
+            //Tipos del login
+    login: '[Auth] Login',
+    logout: '[Auth] Logout',
+
+
 }

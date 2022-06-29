@@ -1,14 +1,14 @@
 import React from 'react'
 import { Disclosure } from '@headlessui/react'
+import { useDispatch } from 'react-redux';
 import { LogoutIcon } from '@heroicons/react/outline'
-import { Link, useNavigate } from 'react-router-dom'
-
+import { Link } from 'react-router-dom'
+import { startLogout } from '../../actions/auth';
 
 export const Navbar = () => {
-    const navigate = useNavigate()
+  const dispatch = useDispatch();
     const handleLogout = (e) => {
-        e.preventDefault()
-        navigate('/login')
+        dispatch(startLogout())
     }
   return (
     <Disclosure as="nav" className="bg-gray-800">

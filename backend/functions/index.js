@@ -1,8 +1,5 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-// const {signInWithEmailAndPassword}  = require("firebase/auth");
-
-
 
 const serviceAccount = require("./permissions.json");
 admin.initializeApp({
@@ -10,40 +7,39 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://lugares-y-puntos-118bd.firebaseio.com",
 });
+
+
 //REGISTER
-// exports.register = functions.https.onRequest( (request, response) => {
-//     const {name, email, password} = request.body;
-  
-  
-//     admin.auth().createUser({email: email, name: name, password: password})
-//         .then(function(userRecord) {
-//           // See the UserRecord reference doc for the contents of userRecord.
-//           console.log("Successfully created new user:", userRecord);
-//           // eslint-disable-next-line max-len
-//           response.status(200).send({ok: true, msg: "Usuario creado correctamente"});
-//         })
-//         .catch(function(error) {
-//             console.log("Error creating new user:", error);
-//             response.status(500).send({ok: false, msg: "Hubo problemas para registrar el usuario"});
-//         });
-//   });
-// //LOGIN
-//   exports.login = functions.https.onRequest( (request, response) => {
-//     const { email, password} = request.body;
-  
-  
-//     admin.auth().signInWithEmailAndPassword(auth, email,  password)
-//         .then(function(firebaseUser) {
-//           // See the UserRecord reference doc for the contents of userRecord.
-//           console.log("User logueado:", firebaseUser);
-//           // eslint-disable-next-line max-len
-//           response.status(200).send({ok: true, msg: "Usuario creado correctamente"});
-//         })
-//         .catch(function(error) {
-//             console.log("Error creating new user:", error);
-//             response.status(500).send({ok: false, msg: "Hubo problemas para registrar el usuario"});
-//         });
-//   });
+ exports.register = functions.https.onRequest( (request, response) => {
+     const {name, email, password} = request.body;
+     admin.auth().createUser({email: email, name: name, password: password})
+         .then(function(userRecord) {
+           // See the UserRecord reference doc for the contents of userRecord.
+           console.log("Successfully created new user:", userRecord);
+           // eslint-disable-next-line max-len
+           response.status(200).send({ok: true, msg: "Usuario creado correctamente"});
+         })
+         .catch(function(error) {
+             console.log("Error creating new user:", error);
+             response.status(500).send({ok: false, msg: "Hubo problemas para registrar el usuario"});
+         });
+   });
+
+//LOGIN
+ //exports.login = functions.https.onRequest( (request, response) => {
+ //  const { email, password} = request.body; 
+ //  (async () => {
+ //    try {
+ //     admin.auth(email,password).then((user)=>{
+ //       //The promise sends me a user object, now I get the token, and refresh it by sending true (obviously another promise)            
+ //       console.log(user);
+ //       })
+ //    } catch (error) {
+ //      console.log(error);
+ //    }
+ //  })();
+ //});
+//
 
 
   //CREAR  PUNTOS
