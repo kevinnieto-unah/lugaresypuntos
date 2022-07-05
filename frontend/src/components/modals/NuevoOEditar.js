@@ -8,8 +8,8 @@ import { PuntosAgregar } from "../helpers/PuntosAgregar";
 import { useSelector } from "react-redux";
 import { PuntosDeReferenciaLugar } from "../Tablas/Lugares/PuntosDeReferenciaLugar";
 import { eventClearActiveLugar, lugarAddNew, lugarUpdated } from "../../actions/lugares";
+import {clearActivePuntosTemporales } from "../../actions/temporales";
 import Swal from "sweetalert2";
-
 
 const initLugar = {
   nombre: '',
@@ -18,28 +18,37 @@ const initLugar = {
   rango: '',
   tipo: '',
   disponibilidad: '',
-  puntosdeReferencia: []
+  numeroDePuntos: '',
+  puntos: [],
 }
 
 //COMIENZO DEL COMPONENTE
 export const NuevoOEditar = () => {
   const [formValues, setFormValues] = useState( initLugar);
-  const { puntosLugar } = useSelector( state => state.puntos );
+
   const { activeLugar } = useSelector( state => state.lugares );
-  const {nombre, latitud,longitud,rango, tipo} = formValues;
+ 
+  const { puntosTemporales } = useSelector( state => state.temporales );
+
+
+  const {nombre, latitud,longitud,rango, tipo, disponibilidad} = formValues;
   const dispatch = useDispatch();
 
-      //ACTUALIZAR EVENTO
-      useEffect(() => {
-        if ( activeLugar ) {
-          setFormValues( activeLugar );
-        } else {
-          setFormValues( initLugar );
-        }
-    }, [activeLugar, setFormValues])
+       //ACTUALIZAR EVENTO
+        useEffect(() => {
+          if ( activeLugar ) {
+            setFormValues( activeLugar );
+            
+    
+    
+
+          } else {
+            setFormValues( initLugar );
+    
+          }
+      }, [activeLugar, setFormValues, dispatch])
 
    //FUNCION MANEJADORA DE CAMPOS DEL FORMULARIO
-
 
    const handleInputChange = ({ target }) => {
     setFormValues({
@@ -50,14 +59,26 @@ export const NuevoOEditar = () => {
   // FUNCION PARA  CERRAR EL MODAL
   const closeModal = () => {
     dispatch(uiCloseModal());
+    dispatch(clearActivePuntosTemporales())
+    dispatch(eventClearActiveLugar());
+    
+
   };
   const handleNuevoLugar = (e) => {
      e.preventDefault()
      if ( activeLugar ) {
-      dispatch( lugarUpdated( formValues ) )
+      const contador= puntosTemporales.length;
+      const lugarActualiado = {
+        ...formValues,
+        puntos: puntosTemporales,
+        numeroDePuntos: contador,
+      }
+      dispatch( lugarUpdated( lugarActualiado ) )
       dispatch( eventClearActiveLugar() );
+      dispatch(clearActivePuntosTemporales());
+      dispatch(uiCloseModal());
       Swal.fire(
-        'Punto actualizado con exito!',
+        'Lugar actualizado con exito!',
         '',
         'success'
       )
@@ -72,16 +93,21 @@ export const NuevoOEditar = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire(
-          'Punto creado con exito!',
+          'Lugar creado con exito!',
           '',
           'success'
         )
+        const contador= puntosTemporales.length;
         dispatch( lugarAddNew({
           ...formValues,
-          puntos: puntosLugar,
+          puntos: puntosTemporales,
+          numeroDePuntos: contador,
           id: new Date().getTime(),
         }) );
+      
         setFormValues( initLugar );
+        dispatch(clearActivePuntosTemporales());
+        dispatch(uiCloseModal());
       }
       
     })
@@ -249,6 +275,7 @@ export const NuevoOEditar = () => {
                                     focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
                               name="disponibilidad"
                               onChange={handleInputChange}
+                              value={disponibilidad}
                             >
                               <option value={"-"}>
                                 -Disponibilidad-
@@ -272,7 +299,14 @@ export const NuevoOEditar = () => {
                       </div>
                     </form>
                     <PuntosAgregar />
-                    <PuntosDeReferenciaLugar />
+                  
+                    
+                     <PuntosDeReferenciaLugar/>
+                                  
+                    
+                    
+                    
+                   
                   </div>
                 </div>
               </div>

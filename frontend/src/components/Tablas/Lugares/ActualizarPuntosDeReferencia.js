@@ -1,18 +1,22 @@
 import React  from 'react'
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
+
 import TableContainer from "@mui/material/TableContainer";
 
 import Paper from "@mui/material/Paper";
 
-import { CeldaPuntodeReferencia } from './CeldaPuntodeReferencia';
 import { useSelector } from "react-redux";
+import { CeldaPuntodeReferencia } from './CeldaPuntodeReferencia';
 
 
-export const PuntosDeReferenciaLugar = () => {
 
-  const { puntosTemporales } = useSelector( state => state.temporales )
-    return (
+export const ActualizarPuntosDeReferencia = () => {
+    
+  const { activeLugar } = useSelector( state => state.lugares );
+  const { puntos } = activeLugar
+  
+  return (
     <>
     {/* Tabla de Puntos de Referencia */}
     <p className="text-sm pt-5 font-medium text-gray-900">
@@ -25,11 +29,10 @@ export const PuntosDeReferenciaLugar = () => {
                           >
                             <TableBody>
                              {
-                       
-                              puntosTemporales.map(row => (
+                              puntos.map(row => (
                                 <CeldaPuntodeReferencia key={row.id} row={row} />
-                                ))
-                          
+                              ))
+                             
                               }
                             </TableBody>
                           </Table>

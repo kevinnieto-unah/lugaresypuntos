@@ -3,8 +3,8 @@ import { TableCell, TableRow } from '@mui/material';
 import { Acciones } from './Acciones';
 
 export const CeldaLugares = ({row}) => {
-    const {  nombre,puntos, tipo, disponibilidad, rango } = row;
-    const numeroPuntos = puntos.length;
+    const {  nombre, tipo, disponibilidad, rango, numeroDePuntos } = row;
+   
 
   return (
     <TableRow
@@ -26,7 +26,7 @@ export const CeldaLugares = ({row}) => {
                     )}
                   </TableCell>
                   <TableCell align="left">{rango} KM </TableCell>
-                  <TableCell align="left">{numeroPuntos}</TableCell>
+                  <TableCell align="left">{numeroDePuntos}</TableCell>
                   <TableCell align="left">{tipo}</TableCell>
                   <Acciones row={row}/>
                 </TableRow>

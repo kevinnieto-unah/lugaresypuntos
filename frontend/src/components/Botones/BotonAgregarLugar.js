@@ -1,14 +1,13 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { addPuntosDelLugar } from '../../actions/puntos';
+import { addPuntosTemporales } from '../../actions/temporales';
 
 export const BotonAgregarLugar = ({row}) => {
   const dispatch = useDispatch();
-
     const HandleListaDePunto = (e) => {
         e.preventDefault()
-        console.log(row); 
-        dispatch(addPuntosDelLugar(row));
+        dispatch(addPuntosTemporales(row));
+        
         
         
     

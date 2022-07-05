@@ -1,16 +1,10 @@
 import { types } from "../types/types";
 
 const initialState ={
-    puntos: [
-        {
-            id: new Date().getTime(),
-            nombre: 'Colonia Kennedy',
-            latitud: '19.4',
-            longitud: '-99.1'
-        },
-    ],
+    checking: true,
+    puntos: [ ],
     activePunto: null,
-    puntosLugar: [],
+
 }
 
 export const puntosReducer =(state=initialState,action)=>{
@@ -19,36 +13,24 @@ export const puntosReducer =(state=initialState,action)=>{
         case types.puntoSetActive:
             return {
                 ...state,
-                activePunto: action.payload
-            }
-        case types.addPuntosDelLugar:
-            return {
-                ...state,
-                puntosLugar: [action.payload, ...state.puntosLugar ]
-              
-            }
-
-        case types.deletePuntosDelLugar:
-            return {
-                ...state,
-                puntosLugar: state.puntosLugar.filter(
-                    e => ( e.id !== state.activePunto.id )
-                ),
-                activePunto: null
+                activePunto: action.payload,
+           
             }
 
 
         case  types.puntoAddNew:
             return {
                 ...state,
-                puntos: [ action.payload, ...state.puntos ]
+                puntos: [ action.payload, ...state.puntos ],
+           
                 
             }      
         
         case types.eventClearActivePunto:
             return {
                 ...state,
-                activePunto: null
+                activePunto: null,
+           
             }   
         case types.puntoUpdated:
             return {
@@ -56,7 +38,8 @@ export const puntosReducer =(state=initialState,action)=>{
                 //Busca el objeto con ese id y lo reemplaza con el nuevo
                 puntos: state.puntos.map(
                     e => ( e.id === action.payload.id ) ? action.payload : e
-                )
+                ),
+           
             }
         
         case types.puntoDeleted:
@@ -65,8 +48,25 @@ export const puntosReducer =(state=initialState,action)=>{
                 puntos: state.puntos.filter(
                     e => ( e.id !== state.activePunto.id )
                 ),
-                activePunto: null
+                activePunto: null,
+           
             }
+
+        case types.puntoLoaded:
+            return {
+                ...state,
+                puntos: [ ...action.payload ],
+           
+            }
+        case types.puntosLogoutCleaning:
+            return {
+                ...state,
+                activePunto: null,
+                puntos: []
+            }
+            
+    
+        
         
 
         

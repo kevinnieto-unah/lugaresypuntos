@@ -1,13 +1,18 @@
 import { InformationCircleIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline'
 import { TableCell } from '@mui/material'
 import React from 'react'
+
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
-import { lugarDeleted, lugarSetActive } from '../../../actions/lugares'
+import {lugarDeleted, lugarSetActive } from '../../../actions/lugares'
+import { addPuntosTemporales } from '../../../actions/temporales'
 import { uiOpenModal } from '../../../actions/ui'
+
+
 
 export const Acciones = ({row}) => {
   const dispatch = useDispatch();
+
 
   const handleEdit = (e) => {
     e.preventDefault()
@@ -21,10 +26,13 @@ export const Acciones = ({row}) => {
       confirmButtonText: 'Si'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('Entro aqui con exito', row); 
-        dispatch( lugarSetActive(row) ) 
+        dispatch( lugarSetActive(row)   )
+        const puntosActive= row.puntos  
+        puntosActive.map((row)=>(
+          dispatch(addPuntosTemporales(row))
+        ))
+
         dispatch( uiOpenModal() )
-        
         
       }
       
@@ -50,6 +58,8 @@ export const Acciones = ({row}) => {
         
         
         dispatch( lugarSetActive(row) ) 
+
+       
         dispatch( lugarDeleted( ))
       }
       

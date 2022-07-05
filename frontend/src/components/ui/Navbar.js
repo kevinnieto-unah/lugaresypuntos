@@ -1,13 +1,21 @@
 import React from 'react'
 import { Disclosure } from '@headlessui/react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LogoutIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 import { startLogout } from '../../actions/auth';
+import { puntoLogout } from '../../actions/puntos';
+import { temporalesLogout } from '../../actions/temporales';
+import { lugaresLogout } from '../../actions/lugares';
 
 export const Navbar = () => {
+  const { name } = useSelector( state => state.auth );
+  console.log(name);
   const dispatch = useDispatch();
     const handleLogout = (e) => {
+        dispatch(puntoLogout())
+        dispatch(temporalesLogout())
+        dispatch(lugaresLogout())
         dispatch(startLogout())
     }
   return (
@@ -48,9 +56,9 @@ export const Navbar = () => {
 
               
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Nombre del Cristiano*/}
+                {/* name del Cristiano*/}
                 <span className="flex-shrink-0 flex items-center text-white px-3 py-2 rounded-md text-lg font-light">
-                  Kevin Nieto
+                  {name}
                 </span>
 
 

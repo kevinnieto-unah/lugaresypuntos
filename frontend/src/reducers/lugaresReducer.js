@@ -10,6 +10,7 @@ const initialState ={
             rango: '10',
             tipo: 'Colonia',
             disponibilidad: true,
+            numeroDePuntos: 1,
             puntos:[
                 {
                     id: new Date().getTime(),
@@ -28,6 +29,7 @@ const initialState ={
 export const lugaresReducer =(state=initialState,action)=>{
     switch (action.type) {
 
+//TODO SOBRE LUGARES
         case types.lugarSetActive:
             return {
                 ...state,
@@ -57,12 +59,42 @@ export const lugaresReducer =(state=initialState,action)=>{
         
         case types.lugarDeleted:
             return {
-                ...state,
                 lugares: state.lugares.filter(
                     e => ( e.id !== state.activeLugar.id )
                 ),
                 activeLugar: null
             }
+//OJO AQUI
+            // case types.deletePuntosActiveLugar:
+            //     return {
+            //         ...state,
+            //         activeLugar: {
+            //             puntos: state.puntosLugar.filter(
+            //                 e => ( e.id !== state.activePunto.id )
+            //             ),
+            //         }
+            //     }
+
+            // case types.addPuntosActiveLugar:
+            //         return {
+            //             ...state,
+            //             activeLugar:{
+            //                 puntos: [action.payload, ...state.puntosLugar ]
+            //             }
+                        
+                      
+           //         }
+
+            case types.lugaresLogoutCleaning:
+                return {
+                    ...state,
+                    activeLugar: null,
+                    lugares: []
+                }
+
+
+            
+         
         
         
         

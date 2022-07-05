@@ -20,6 +20,8 @@ import Swal from 'sweetalert2';
 
 
 
+
+
 const initPunto = {
   nombre: '',
   latitud: '',
@@ -105,6 +107,7 @@ export const PuntosScreen = () => {
   //   console.log('delete')
   // }
 
+ 
 
   return (
     <>

@@ -2,14 +2,16 @@ import React from 'react'
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { TrashIcon } from "@heroicons/react/outline";
-import { deletePuntosDelLugar, puntoSetActive } from "../../../actions/puntos";
 import { useDispatch } from "react-redux";
+import { deletePuntosTemporales } from '../../../actions/temporales';
+
 
 export const CeldaPuntodeReferencia = ({row}) => {
     const dispatch = useDispatch();
     const handleDelete = () => {
-        dispatch( puntoSetActive(row) ) 
-        dispatch( deletePuntosDelLugar( ))
+        dispatch( deletePuntosTemporales(row) ) 
+
+
       };
   return (
     <>

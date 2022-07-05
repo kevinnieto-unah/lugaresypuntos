@@ -8,7 +8,7 @@ export const lugarAddNew = (lugar) => ({
 
 export const lugarSetActive = (lugar) => ({
   type: types.lugarSetActive,
-  payload: lugar
+  payload: lugar,
 });
 
 export const lugarUpdated = ( lugar ) => ({
@@ -17,6 +17,17 @@ export const lugarUpdated = ( lugar ) => ({
 });
 
 
-export const eventClearActiveLugar = () => ({ type: types.eventClearActiveLugar });
+export const eventClearActiveLugar = () => ({ 
+  type: types.eventClearActiveLugar });
 
-export const lugarDeleted = (lugar) => ({ type: types.lugarDeleted });
+export const lugarDeleted = (lugar) => ({ 
+  type: types.lugarDeleted });
+
+
+// export const deletePuntosActiveLugar = (lugar) => ({ 
+//   type: types.deletePuntosActiveLugar });
+
+  export const lugaresLogout = () => ({
+    type: types.lugaresLogoutCleaning
+  });
+  

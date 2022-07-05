@@ -9,9 +9,9 @@ export const AuthRouter = () => {
     <div className='auth__main'>
         <div className='auth__box-container'>
             <Routes>
-                      <Route exact path='/auth/login' element={<LoginScreen/>}/>
-                      <Route exact path='/auth/register' element={<RegisterScreen/>}/>
-                      <Route exact path='/auth/*' element={<Navigate to="/auth/login"/>}/>
+                      <Route exact path='/login' element={<LoginScreen/>}/>
+                      <Route exact path='/register' element={<RegisterScreen/>}/>
+                      <Route exact path='/*' element={<Navigate to="/login"/>}/>
             </Routes>
 
         </div>

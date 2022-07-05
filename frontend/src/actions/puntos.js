@@ -1,3 +1,4 @@
+import { fetchFirebase } from "../helpers/fetch";
 import { types } from "../types/types"
 
 
@@ -10,11 +11,6 @@ export const puntoSetActive = (punto) => ({
   type: types.puntoSetActive,
   payload: punto
 });
-export const addPuntosDelLugar = (punto) => ({
-  type: types.addPuntosDelLugar,
-  payload: punto
-});
-export const deletePuntosDelLugar = (punto) => ({ type: types.deletePuntosDelLugar });
 
 export const puntoUpdated = ( punto ) => ({
   type: types.puntoUpdated,
@@ -25,3 +21,25 @@ export const puntoUpdated = ( punto ) => ({
 export const eventClearActivePunto = () => ({ type: types.eventClearActivePunto });
 
 export const puntoDeleted = (punto) => ({ type: types.puntoDeleted });
+
+
+//CARGAR EVENTOS
+export const puntoStartLoading = () => {
+  return async(dispatch) => {
+      try {           
+          const resp = await fetchFirebase( 'obtenerPuntos', {}, 'GET' );
+          const body = await resp.json();
+          dispatch( puntoLoaded( body ) );
+      } catch (error) {
+          console.log(error)
+      }
+  }
+}
+const puntoLoaded = (puntos) => ({
+  type: types.puntoLoaded,
+  payload: puntos
+})
+
+export const puntoLogout = () => ({
+  type: types.puntosLogoutCleaning
+});
