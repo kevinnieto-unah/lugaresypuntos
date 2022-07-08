@@ -4,8 +4,8 @@ import React from 'react'
 
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
-import {lugarDeleted, lugarSetActive } from '../../../actions/lugares'
-import { addPuntosTemporales } from '../../../actions/temporales'
+import { lugarSetActive, lugarStartDelete } from '../../../actions/lugares'
+import {  startPuntosCargados } from '../../../actions/temporales'
 import { uiOpenModal } from '../../../actions/ui'
 
 
@@ -27,11 +27,12 @@ export const Acciones = ({row}) => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch( lugarSetActive(row)   )
-        const puntosActive= row.puntos  
-        puntosActive.map((row)=>(
-          dispatch(addPuntosTemporales(row))
-        ))
-
+        console.log(row.id);
+        // const puntosActive= row.puntos  
+        // puntosActive.map((row)=>(
+        //   dispatch(addPuntosTemporales(row))
+        // ))
+        dispatch( startPuntosCargados(row.id)   )
         dispatch( uiOpenModal() )
         
       }
@@ -42,7 +43,7 @@ export const Acciones = ({row}) => {
   const handleDelete = (e) => {
     e.preventDefault()
     Swal.fire({
-      title: '¿Deseas eliminar este punto?',
+      title: '¿Deseas eliminar este lugar?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -51,7 +52,7 @@ export const Acciones = ({row}) => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire(
-          'Punto eliminado con exito con exito!',
+          'Lugar eliminado con exito con exito!',
           '',
           'success'
         )
@@ -60,14 +61,13 @@ export const Acciones = ({row}) => {
         dispatch( lugarSetActive(row) ) 
 
        
-        dispatch( lugarDeleted( ))
+        dispatch( lugarStartDelete( ))
       }
       
     })
      
   }
   
-
 
 
 

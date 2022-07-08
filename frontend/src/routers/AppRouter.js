@@ -17,6 +17,7 @@ import { MainRouter } from './MainRouter';
 import { puntoStartLoading } from '../actions/puntos';
 
 import { AuthRouter } from './AuthRouter';
+import { lugarStartLoading } from '../actions/lugares';
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export const AppRouter = () => {
             
             if (user?.uid) {
               dispatch( login(user.uid, user.displayName))
+              dispatch( lugarStartLoading() );
               dispatch( puntoStartLoading() );
               setIsLoggedIn(true)
 

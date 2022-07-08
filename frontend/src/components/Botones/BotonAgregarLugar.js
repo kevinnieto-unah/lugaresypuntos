@@ -1,12 +1,30 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import { addPuntosTemporales } from '../../actions/temporales';
 
 export const BotonAgregarLugar = ({row}) => {
+  const { puntosTemporales } = useSelector( state => state.temporales );
   const dispatch = useDispatch();
     const HandleListaDePunto = (e) => {
-        e.preventDefault()
-        dispatch(addPuntosTemporales(row));
+        e.preventDefault();
+        const respuesta = puntosTemporales.includes(row)
+        if (respuesta === true) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ese punto de Referencia incluido en el Lugar'
+          })
+        }else{
+          dispatch(addPuntosTemporales(row));
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Punto agregado con exito',
+            showConfirmButton: false,
+            timer: 800
+          })
+        }
         
         
         

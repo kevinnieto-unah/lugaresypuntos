@@ -15,7 +15,7 @@ export const CeldaLugares = ({row}) => {
                     {nombre}
                   </TableCell>
                   <TableCell align="left">
-                    {disponibilidad === true ? (
+                    {disponibilidad === "true" ? (
                       <div className="rounded-full bg-green-500 text-white text-sm  text-center max-w-sm">
                         Disponible
                       </div>

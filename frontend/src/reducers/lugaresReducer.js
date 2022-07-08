@@ -1,27 +1,7 @@
 import { types } from "../types/types";
 
 const initialState ={
-    lugares: [
-        {
-            id: new Date().getTime(),
-            nombre: 'Colonia Canaan',
-            latitud: '19.4',
-            longitud: '-99.1',
-            rango: '10',
-            tipo: 'Colonia',
-            disponibilidad: true,
-            numeroDePuntos: 1,
-            puntos:[
-                {
-                    id: new Date().getTime(),
-                    nombre: 'Colonia Kennedy',
-                    latitud: '19.4',
-                    longitud: '-99.1'
-                },
-            ]
-
-        },
-    ],
+    lugares: [],
     activeLugar: null,
 
 }
@@ -63,6 +43,13 @@ export const lugaresReducer =(state=initialState,action)=>{
                     e => ( e.id !== state.activeLugar.id )
                 ),
                 activeLugar: null
+            }
+
+        case types.lugarLoaded:
+            return {
+                ...state,
+                lugares: [ ...action.payload ],
+           
             }
 //OJO AQUI
             // case types.deletePuntosActiveLugar:

@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react'
-import { Navbar } from '../ui/Navbar'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,9 +13,10 @@ import { AccionesPuntos } from '../Tablas/Puntos/AccionesPuntos';
 //import { puntoSetActive } from '../../actions/puntos'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { eventClearActivePunto, puntoAddNew, puntoUpdated} from '../../actions/puntos';
+import { eventClearActivePunto, puntoStartAddNew, puntoStartLoading, puntoStartUpdate} from '../../actions/puntos';
 import { BannerEdit } from '../ui/BannerEdit';
 import Swal from 'sweetalert2';
+import { Loading } from '../ui/Loading';
 
 
 
@@ -31,12 +31,22 @@ const initPunto = {
 
 export const PuntosScreen = () => {
   //DECLARACION DE VARIABLES
+  const dispatch = useDispatch();
+  const [checking, setchecking] = useState(true);
+    useEffect(() => {
+      dispatch( puntoStartLoading() );  
+      setchecking(false)
+       
+  }, [ dispatch, setchecking ]);
+    
+    
+    
     const { activePunto } = useSelector( state => state.puntos );
     const { puntos } = useSelector( state => state.puntos ); 
     const [formValues, setFormValues] = useState( initPunto);
-    const dispatch = useDispatch();
     const {nombre, latitud,longitud } = formValues;
 
+    
       //ACTUALIZAR EVENTO
       useEffect(() => {
        if ( activePunto ) {
@@ -54,7 +64,7 @@ export const PuntosScreen = () => {
       e.preventDefault()
      
       if ( activePunto ) {
-        dispatch( puntoUpdated( formValues ) )
+        dispatch( puntoStartUpdate( formValues ) )
         dispatch( eventClearActivePunto() );
         Swal.fire(
           'Punto actualizado con exito!',
@@ -76,11 +86,11 @@ export const PuntosScreen = () => {
             '',
             'success'
           )
-          dispatch( puntoAddNew({
-            ...formValues,
-            id: new Date().getTime(),
-          }) );
+          setchecking(true)
+          const {nombre, latitud, longitud } = formValues
+          dispatch( puntoStartAddNew({nombre, latitud, longitud }) );
           setFormValues( initPunto );
+          setchecking(false)
         }
         
       })
@@ -106,12 +116,15 @@ export const PuntosScreen = () => {
   //   e.preventDefault()
   //   console.log('delete')
   // }
+  if (checking) {
+    return(<Loading/>)
+  }
 
  
 
   return (
     <>
-        <Navbar/>
+        
         <div className='pt-10 flex justify-center items-start'>
             <h1 className="text-3xl leading-6 font-medium text-gray-900">
                 Puntos de Referencia

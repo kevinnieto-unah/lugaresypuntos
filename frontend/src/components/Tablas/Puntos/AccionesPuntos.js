@@ -3,10 +3,10 @@ import { TableCell } from '@mui/material'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
-import {  puntoDeleted, puntoSetActive } from '../../../actions/puntos'
+import { puntoSetActive, puntoStartDelete } from '../../../actions/puntos'
 
 export const AccionesPuntos = ({row}) => {
-
+    
     const dispatch = useDispatch();
 
     const handleEdit = (e) => {
@@ -45,17 +45,19 @@ export const AccionesPuntos = ({row}) => {
             '',
             'success'
           )
-          
-          
           dispatch( puntoSetActive(row) ) 
-          dispatch( puntoDeleted( ))
+          dispatch( puntoStartDelete())
+         
+
+          
+          
         }
         
       })
        
     } 
-      
-
+  
+  
   return (
     <TableCell align="left">
                           <button

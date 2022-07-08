@@ -1,6 +1,27 @@
 import { fetchFirebase } from "../helpers/fetch";
 import { types } from "../types/types"
+import Swal from "sweetalert2";
 
+export const puntoStartAddNew = ( punto ) => {
+
+  return async( dispatch, getState ) => {
+
+      try {
+
+          ///Solicita el token(endponit, payload, tipo de Peticion)
+          const resp = await fetchFirebase( 'newPunto', punto, 'POST');
+          const body = await resp.json();
+          const {id}= body.punto
+           if ( body.ok ) {
+               punto.id = id; 
+               console.log( punto );
+               dispatch( puntoAddNew( punto ) );
+           }
+      } catch (error) {
+          console.log(error);
+      }
+  }
+}
 
 export const puntoAddNew = (punto) => ({
   type: types.puntoAddNew,
@@ -12,6 +33,26 @@ export const puntoSetActive = (punto) => ({
   payload: punto
 });
 
+export const puntoStartUpdate = ( punto ) => {
+  return async(dispatch) => {
+
+      try {
+          const resp = await fetchFirebase(`updatePunto/${ punto.id }`, punto, 'PUT' );
+          const body = await resp.json();
+
+          if ( body.ok ) {
+              dispatch( puntoUpdated( punto ) );
+          } else {
+              Swal.fire('Error', body.msg, 'error');
+          }
+      } catch (error) {
+          console.log(error)
+      }
+  }
+}
+
+
+
 export const puntoUpdated = ( punto ) => ({
   type: types.puntoUpdated,
   payload: punto
@@ -19,6 +60,32 @@ export const puntoUpdated = ( punto ) => ({
 
 
 export const eventClearActivePunto = () => ({ type: types.eventClearActivePunto });
+
+//ELIMINAR EVENTO
+export const puntoStartDelete = () => {
+  return async ( dispatch, getState ) => {
+      const { id } = getState().puntos.activePunto;
+      
+       try {
+           const resp = await fetchFirebase(`deletePunto/${ id }`, {}, 'DELETE' );
+           const body = await resp.json();
+
+           if ( body.ok ) {
+               dispatch( puntoDeleted() );
+           } else {
+               Swal.fire('Error', body.msg, 'error');
+           }
+
+
+       } catch (error) {
+           console.log(error)
+       }
+
+  }
+}
+
+
+
 
 export const puntoDeleted = (punto) => ({ type: types.puntoDeleted });
 

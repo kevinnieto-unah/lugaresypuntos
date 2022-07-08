@@ -19,6 +19,7 @@ export const types = {
     lugarAddNew: '[Lugares] New lugar',
     lugarSetActive: '[Lugares] Set active lugar',
     eventClearActiveLugar: '[event] Clear active event',
+    lugarLoaded: '[Lugares] Load Lugares',
     lugarLoad: '[Lugares] Load lugars',
     lugarUpdated: '[Lugares] Update lugar',
     lugarDeleted: '[Lugares] Delete lugar',
@@ -31,6 +32,7 @@ export const types = {
     deletePuntosTemporales: '[Lugares] Delete lugar temporal',
     clearActivePuntosTemporales: '[Lugares] Limpia puntos temporales',
     temporalesLogoutCleaning: '[Lugares] Logout Cleaning',
+    puntosCargados: '[Lugares] Cargar Puntos',
 
 
     //Tipos del loading

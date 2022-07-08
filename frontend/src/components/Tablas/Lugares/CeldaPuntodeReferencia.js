@@ -4,11 +4,19 @@ import TableCell from "@mui/material/TableCell";
 import { TrashIcon } from "@heroicons/react/outline";
 import { useDispatch } from "react-redux";
 import { deletePuntosTemporales } from '../../../actions/temporales';
+import Swal from 'sweetalert2';
 
 
 export const CeldaPuntodeReferencia = ({row}) => {
     const dispatch = useDispatch();
     const handleDelete = () => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Punto retirado con exito',
+          showConfirmButton: false,
+          timer: 800
+        })
         dispatch( deletePuntosTemporales(row) ) 
 
 

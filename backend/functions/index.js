@@ -28,8 +28,21 @@ admin.initializeApp({
             latitud: latitud,
             longitud: longitud,
           });
+
+          await db.collection("puntos").where("nombre", "==", nombre)
+          .get()
+          .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+              // doc.data() is never undefined for query doc snapshots
+              //const idRef = doc.id
+              //addPuntosDeReferencia(idRef,puntosDeReferencia)
+              const {id}= doc
+  
+              return response.status(200).send({ ok: true, msg: "Punto guardado correctamente", punto: {id} });
+          });
+      })
     
-          return response.status(200).send({ ok: true, msg: "Punto guardado correctamente" });
+          
         } catch (error) {
           console.log(error);
           response.status(500).send({ ok: false, msg:"Hubo problemas para guardar el punto" });
@@ -80,7 +93,7 @@ admin.initializeApp({
               latitud: latitud,
               longitud: longitud,
             });
-            return response.status(200).json(document);
+            return response.status(200).send({ ok: true, msg: "Punto actualizado correctamente" });
           } catch (error) {
             console.log(error);
             response.status(500).send({ ok: false, msg:"Hubo problemas para actualizar el punto" });
@@ -93,12 +106,13 @@ admin.initializeApp({
 //ELIMINAR PUNTO
   exports.deletePunto = functions.https.onRequest( (request, response) => {
     cors(request, response, () => {
-      const extractor = request.params[0]
-    // Le quita el / del inicio
-      const id= extractor.split("/")[1]
-
+      
       //Funcion para eliminar un punto
       (async () => {
+        const extractor = request.params[0]
+        // Le quita el / del inicio
+          const id= extractor.split("/")[1]
+    
           try {
             const doc = db.collection("puntos").doc(id);
             await doc.delete();
@@ -118,7 +132,7 @@ admin.initializeApp({
 exports.newLugar = functions.https.onRequest( (request, response) => {
   
   cors(request, response, () => {
-    const {nombre, latitud, longitud, rango, tipo, disponibilidad, puntosDeReferencia} = request.body;
+    const {nombre, latitud, longitud, rango, tipo, disponibilidad, puntos, numeroDePuntos} = request.body;
     (async () => {
       try {
          await db.collection("lugares").doc().create({
@@ -128,7 +142,7 @@ exports.newLugar = functions.https.onRequest( (request, response) => {
            rango: rango,
            tipo: tipo,
            disponibilidad: disponibilidad,
-           numeroDePuntos: puntosDeReferencia.length
+           numeroDePuntos: numeroDePuntos,
   
          });
   
@@ -137,12 +151,13 @@ exports.newLugar = functions.https.onRequest( (request, response) => {
           .then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
               // doc.data() is never undefined for query doc snapshots
-              const idRef = doc.id
-              addPuntosDeReferencia(idRef,puntosDeReferencia)
+              const {id} = doc
+              addPuntosDeReferencia(id,puntos)
+              return response.status(200).send({ ok: true, msg: "Lugar guardado correctamente", lugar: {id} });
           });
       })
         
-        return response.status(200).send({ ok: true, msg: "Lugar creado con exito" });
+        
       } catch (error) {
         console.log(error);
         response.status(500).send({ ok: false, msg:"Hubo problemas para guardar el punto" });
@@ -301,6 +316,35 @@ exports.buscarLugarPorTipo = functions.https.onRequest( (request, response) => {
   })
 });
 
+//ACTUALIZAR LUGAR
+exports.getPuntosDeReferenciaLugar = functions.https.onRequest( (request, response) => {
+  cors(request, response, () => {
+    (async () => {
+    // Extrae el id del path
+    const extractor = request.params[0]
+    // Le quita el / del inicio
+    const id= extractor.split("/")[1]
+       try {
+        let query = db.collection(`lugares/${id}/puntosDeReferencia`);
+        const querySnapshot = await query.get();
+        let docs = querySnapshot.docs;
+    
+        const respuestadb = docs.map((doc) => ({
+          id: doc.id,
+          nombre: doc.data().nombre,
+          latitud: doc.data().latitud,
+          longitud: doc.data().longitud,
+        }));
+    
+        return response.status(200).json(respuestadb);
+        } catch (error) {
+          console.log(error);
+          response.status(500).send({ ok: false, msg:"Hubo problemas para obtener Los Puntos del Lugar" });
+        }
+      })();
+    
+  })
+});
 
 //ACTUALIZAR LUGAR
 exports.updateLugar = functions.https.onRequest( (request, response) => {
@@ -311,10 +355,9 @@ exports.updateLugar = functions.https.onRequest( (request, response) => {
     // Le quita el / del inicio
     const id= extractor.split("/")[1]
     const document = db.collection("lugares").doc(id);
-    const {nombre, latitud, longitud, rango, tipo, disponibilidad, puntosDeReferencia} = request.body;
+    const {nombre, latitud, longitud, rango, tipo, disponibilidad, puntos, numeroDePuntos} = request.body;
         try {
            deletePuntosDeReferencia(id);
-           numeroDePuntos = puntosDeReferencia.length; 
            await document.update({
               nombre: nombre,
               latitud: latitud,
@@ -325,7 +368,7 @@ exports.updateLugar = functions.https.onRequest( (request, response) => {
               numeroDePuntos: numeroDePuntos,
             });
   
-           renovarPuntosDeReferencia(id,puntosDeReferencia)
+           renovarPuntosDeReferencia(id,puntos)
         
           return response.status(200).send({ ok: true, msg:"Lugar actualizado con exito" });
         } catch (error) {
@@ -335,8 +378,6 @@ exports.updateLugar = functions.https.onRequest( (request, response) => {
       })();
     
   })
-  
-
 });
 
 //TO DO 

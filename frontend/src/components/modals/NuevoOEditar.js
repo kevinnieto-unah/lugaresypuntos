@@ -7,7 +7,7 @@ import { PuntosAgregar } from "../helpers/PuntosAgregar";
 
 import { useSelector } from "react-redux";
 import { PuntosDeReferenciaLugar } from "../Tablas/Lugares/PuntosDeReferenciaLugar";
-import { eventClearActiveLugar, lugarAddNew, lugarUpdated } from "../../actions/lugares";
+import { eventClearActiveLugar, lugarStartAddNew, lugarStartUpdate } from "../../actions/lugares";
 import {clearActivePuntosTemporales } from "../../actions/temporales";
 import Swal from "sweetalert2";
 
@@ -68,12 +68,13 @@ export const NuevoOEditar = () => {
      e.preventDefault()
      if ( activeLugar ) {
       const contador= puntosTemporales.length;
-      const lugarActualiado = {
+      const lugarActualizado = {
         ...formValues,
         puntos: puntosTemporales,
         numeroDePuntos: contador,
       }
-      dispatch( lugarUpdated( lugarActualiado ) )
+      console.log(lugarActualizado);
+      dispatch( lugarStartUpdate( lugarActualizado ) )
       dispatch( eventClearActiveLugar() );
       dispatch(clearActivePuntosTemporales());
       dispatch(uiCloseModal());
@@ -98,12 +99,19 @@ export const NuevoOEditar = () => {
           'success'
         )
         const contador= puntosTemporales.length;
-        dispatch( lugarAddNew({
-          ...formValues,
+        const {nombre, latitud, longitud, rango, tipo, disponibilidad } = formValues
+
+        const envio ={
+          nombre, 
+          latitud, 
+          longitud,
+          rango, 
+          tipo, 
+          disponibilidad,
           puntos: puntosTemporales,
-          numeroDePuntos: contador,
-          id: new Date().getTime(),
-        }) );
+          numeroDePuntos: contador
+        }
+        dispatch( lugarStartAddNew(envio) );
       
         setFormValues( initLugar );
         dispatch(clearActivePuntosTemporales());

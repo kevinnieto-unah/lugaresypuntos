@@ -40,6 +40,12 @@ export const temporalesReducer =(state=initialState,action)=>{
                 puntosTemporales:[],
                 temporalActive: []
             }
+        case types.puntosCargados:
+            return {
+                ...state,
+                puntosTemporales: [ ...action.payload ],
+           
+            }
          
         
         

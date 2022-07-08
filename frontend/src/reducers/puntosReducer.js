@@ -1,7 +1,6 @@
 import { types } from "../types/types";
 
 const initialState ={
-    checking: true,
     puntos: [ ],
     activePunto: null,
 

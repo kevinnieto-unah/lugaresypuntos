@@ -10,7 +10,6 @@ import { lugaresLogout } from '../../actions/lugares';
 
 export const Navbar = () => {
   const { name } = useSelector( state => state.auth );
-  console.log(name);
   const dispatch = useDispatch();
     const handleLogout = (e) => {
         dispatch(puntoLogout())

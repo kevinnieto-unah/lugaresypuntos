@@ -1,5 +1,5 @@
-import React from "react";
-import { Navbar } from "../ui/Navbar";
+import React, { useEffect, useState } from "react";
+
 import {
   PlusIcon,
 } from "@heroicons/react/outline";
@@ -9,10 +9,19 @@ import { useDispatch } from "react-redux";
 import { Buscador } from "../ui/Buscador";
 import { TablaPrincipal } from "../Tablas/Lugares/TablaPrincipal";
 import { uiOpenModal } from "../../actions/ui";
+import { lugarStartLoading } from "../../actions/lugares";
+import { Loading } from "../ui/Loading";
 
 
 export const LugaresScreen = () => {
   const dispatch = useDispatch();
+  const [checking, setchecking] = useState(true);
+    useEffect(() => {
+      dispatch( lugarStartLoading() );  
+      setchecking(false)
+       
+  }, [ dispatch, setchecking ]);
+
   const modalTipo= 'nuevoOEditar'
     const handleClickNew = () => {
       dispatch(uiOpenModal(modalTipo));
@@ -29,10 +38,13 @@ export const LugaresScreen = () => {
   //   console.log('edit')
   // }
 
+  if (checking) {
+    return(<Loading/>)
+  }
+
+
   return (
     <>
-      <Navbar />
-
       {/* TITULO */}
       <div className="pt-10 flex justify-center items-start">
         <h1 className="text-3xl leading-6 font-medium text-gray-900">
