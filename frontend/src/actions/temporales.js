@@ -20,9 +20,17 @@ export const addPuntosTemporales = (punto) => ({
     type: types.temporalesLogoutCleaning
   });
 
+  export const startLoadingTemporal = () => ({ 
+    type: types.startLoadingTemporal });
+  
+  export const finishLoadingTemporal = () => ({ 
+    type: types.finishLoadingTemporal });
+
 
   export const startPuntosCargados = (id) => {
     return async(dispatch) => {
+      dispatch(startLoadingTemporal())
+      console.log("Si hizo la peticion");
         try {           
             const resp = await fetchFirebase( `getPuntosDeReferenciaLugar/${ id }`, {}, 'GET' );
             const body = await resp.json(); 
@@ -30,6 +38,7 @@ export const addPuntosTemporales = (punto) => ({
         } catch (error) {
             console.log(error)
         }
+        dispatch(finishLoadingTemporal())
     }
   }
 

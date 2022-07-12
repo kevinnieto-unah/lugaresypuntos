@@ -3,6 +3,8 @@ export const types = {
 
     uiOpenModal: '[ui] Open modal',
     uiCloseModal: '[ui] Close modal',
+    uiStartLoading: '[ui] Cargando..',
+    uiFinishLoading: '[ui] Carga finalizada',
 
     //Tipos de los Puntos
     puntoAddNew: '[Puntos] New punto',
@@ -15,6 +17,10 @@ export const types = {
     puntosLogoutCleaning: '[Puntos] Logout Cleaning',
 
 
+    finishLoadingPunto: '[Puntos] Finish Loading Punto',
+    startLoadingPunto: '[Puntos] Start Loading Punto',
+
+
     //Tipos de los Lugares
     lugarAddNew: '[Lugares] New lugar',
     lugarSetActive: '[Lugares] Set active lugar',
@@ -23,7 +29,11 @@ export const types = {
     lugarLoad: '[Lugares] Load lugars',
     lugarUpdated: '[Lugares] Update lugar',
     lugarDeleted: '[Lugares] Delete lugar',
-    lugaresLogoutCleaning: '[Lugares] Logout Cleaning',
+    finishLoadingLugar: '[Lugares] Finish Loading Lugar',
+    startLoadingLugar: '[Lugares] Start Loading Lugar',
+
+
+
 
     //LUGARES TEMPORALES
     addPuntosTemporales: '[Lugares] Nuevo lugar tempora',
@@ -35,14 +45,15 @@ export const types = {
     puntosCargados: '[Lugares] Cargar Puntos',
 
 
-    //Tipos del loading
-    uiStartLoading: '[UI] Start loading',
-    uiFinishLoading: '[UI] Finish loading',
+    finishLoadingTemporal: '[Temporales] Finish Loading Temporal',
+    startLoadingTemporal: '[Temporales] Start Loading Temporal',
 
         
     //Tipos del login
     login: '[Auth] Login',
     logout: '[Auth] Logout',
+
+    search: '[Busqueda] Inicio Busqueda'
 
 
 }

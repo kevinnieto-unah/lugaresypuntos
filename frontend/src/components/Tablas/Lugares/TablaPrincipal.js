@@ -14,7 +14,7 @@ import { CeldaLugares } from './CeldaLugares';
 export const TablaPrincipal = () => {
     const { lugares } = useSelector( state => state.lugares ); 
 
-
+   
 
     //PARTE DEL SWEET ALERT DEL BORRAR
 

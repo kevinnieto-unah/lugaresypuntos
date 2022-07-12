@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { eventClearActiveLugar} from '../../actions/lugares';
 import { temporalesLogout } from '../../actions/temporales';
-import { TablaDePuntos } from '../Tablas/Puntos/TablaDePuntos';
+
 import {
   GoogleMap,
   useLoadScript,
@@ -28,41 +28,21 @@ const options = {
 };
 
 
-export const InformacionLugarScreen = () => {
+export const InformacionPuntoScreen = () => {
   //LO DEMAS
   const dispatch = useDispatch();  
-  const { activeLugar } = useSelector( state => state.lugares );
-  const { puntosTemporales } = useSelector( state => state.temporales );
-  const {id, nombre, latitud,longitud,rango, tipo, disponibilidad } = activeLugar;
-  let disponible =''
-  let tipoLugar =''
+  const { activePunto } = useSelector( state => state.puntos );
+  const {id, nombre, latitud,longitud } = activePunto;
   const newLatitud = parseFloat(latitud)
   const newlongitud = parseFloat(longitud)
   const center = {
     lat: newLatitud,
     lng: newlongitud
   };
-  console.log(center);
+ 
   
 
-  if (disponibilidad==="true") {
-    disponible= "Disponible"
-  }else{
-    disponible= "No Disponible"
-  }
 
-  if (tipo==="colonia") {
-    tipoLugar= "Colonia"
-  }
-  if (tipo==="centro-educativo") {
-    tipoLugar= "Centro Educativo"
-  }
-  if (tipo==="centro-comercial") {
-    tipoLugar= "Centro Comercial"
-  } 
-  if (tipo==="institucion-gubernamental") {
-    tipoLugar= "Institucion Gubernamental"
-  }
 
     const navigate = useNavigate()
     const handleReturn = (e) => {
@@ -104,7 +84,7 @@ export const InformacionLugarScreen = () => {
         {/* TITULO */}
       <div className="pt-10 mb-10 flex justify-center items-start">
         <h1 className="text-3xl leading-6 font-medium text-gray-900">
-          Informacion del Lugar
+          Informacion del Punto
         </h1>
       </div>
       <div className="max-w-7xl mx-auto px-2 mt-30 sm:px-6 lg:px-8">
@@ -115,10 +95,7 @@ export const InformacionLugarScreen = () => {
                                   {/* Aqui metes esa  papada */}
                                   <ul className="pl-4 text-md space-y-2">
                                      <li className="text-gray-900"> <b>Nombre del Lugar: </b> {nombre}</li>
-                                     <li className="text-gray-900"> <b>Tipo de Lugar: </b>{tipoLugar}</li>
-                                     <li className="text-gray-900"> <b>Rango de Disponibilidad: </b>{rango} KM</li>
-                                     <li className="text-gray-900"> <b>Disponibilidad: </b>{disponible}</li>
-                                     <li className="text-gray-900"> <b>Latitud: </b>{latitud}</li>
+                                       <li className="text-gray-900"> <b>Latitud: </b>{latitud}</li>
                                      <li className="text-gray-900"> <b>Longitud: </b>{longitud}</li>
                                  </ul>
 
@@ -155,8 +132,6 @@ export const InformacionLugarScreen = () => {
                             </div>
                             {/* AQUI TERMINA */}
             
-
-            <TablaDePuntos puntosTemporales={puntosTemporales}/>
             <div className=" px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"

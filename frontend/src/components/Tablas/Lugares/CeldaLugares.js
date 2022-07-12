@@ -4,7 +4,22 @@ import { Acciones } from './Acciones';
 
 export const CeldaLugares = ({row}) => {
     const {  nombre, tipo, disponibilidad, rango, numeroDePuntos } = row;
-   
+    let tipoLugar =''
+
+  
+    if (tipo==="colonia") {
+      tipoLugar= "Colonia"
+    }
+    if (tipo==="centro-educativo") {
+      tipoLugar= "Centro Educativo"
+    }
+    if (tipo==="centro-comercial") {
+      tipoLugar= "Centro Comercial"
+    } 
+    if (tipo==="institucion-gubernamental") {
+      tipoLugar= "Institucion Gubernamental"
+    }
+  
 
   return (
     <TableRow
@@ -27,7 +42,7 @@ export const CeldaLugares = ({row}) => {
                   </TableCell>
                   <TableCell align="left">{rango} KM </TableCell>
                   <TableCell align="left">{numeroDePuntos}</TableCell>
-                  <TableCell align="left">{tipo}</TableCell>
+                  <TableCell align="left">{tipoLugar}</TableCell>
                   <Acciones row={row}/>
                 </TableRow>
   )

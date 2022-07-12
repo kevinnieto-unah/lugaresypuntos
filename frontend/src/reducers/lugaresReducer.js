@@ -3,6 +3,7 @@ import { types } from "../types/types";
 const initialState ={
     lugares: [],
     activeLugar: null,
+    loadingLugar: false
 
 }
 
@@ -14,6 +15,16 @@ export const lugaresReducer =(state=initialState,action)=>{
             return {
                 ...state,
                 activeLugar: action.payload
+            }
+        case types.startLoadingLugar:
+            return {
+                ...state,
+                loadingLugar: true
+            }
+        case types.finishLoadingLugar:
+            return {
+                ...state,
+                loadingLugar: false
             }
 
         case  types.lugarAddNew:
@@ -51,35 +62,16 @@ export const lugaresReducer =(state=initialState,action)=>{
                 lugares: [ ...action.payload ],
            
             }
-//OJO AQUI
-            // case types.deletePuntosActiveLugar:
-            //     return {
-            //         ...state,
-            //         activeLugar: {
-            //             puntos: state.puntosLugar.filter(
-            //                 e => ( e.id !== state.activePunto.id )
-            //             ),
-            //         }
-            //     }
 
-            // case types.addPuntosActiveLugar:
-            //         return {
-            //             ...state,
-            //             activeLugar:{
-            //                 puntos: [action.payload, ...state.puntosLugar ]
-            //             }
-                        
-                      
-           //         }
 
-            case types.lugaresLogoutCleaning:
+            
+            case types.search: 
                 return {
-                    ...state,
-                    activeLugar: null,
-                    lugares: []
-                }
-
-
+                lugares: state.lugares.filter(
+                    e => ( e.nombre === state.lugares.nombre )
+                ),
+                activeLugar: null
+            }
             
          
         

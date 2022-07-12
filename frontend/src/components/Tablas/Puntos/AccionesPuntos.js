@@ -2,10 +2,12 @@ import { InformationCircleIcon, PencilIcon, TrashIcon } from '@heroicons/react/o
 import { TableCell } from '@mui/material'
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { puntoSetActive, puntoStartDelete } from '../../../actions/puntos'
 
 export const AccionesPuntos = ({row}) => {
+    const navigate = useNavigate()
     
     const dispatch = useDispatch();
 
@@ -22,8 +24,7 @@ export const AccionesPuntos = ({row}) => {
         if (result.isConfirmed) {
           console.log('Entro aqui con exito', row); 
           dispatch( puntoSetActive(row) ) 
-        }
-        
+        }   
       })
       
       
@@ -47,22 +48,26 @@ export const AccionesPuntos = ({row}) => {
           )
           dispatch( puntoSetActive(row) ) 
           dispatch( puntoStartDelete())
-         
 
-          
-          
         }
         
       })
        
     } 
   
-  
+    const handleInformation = (e) => {
+      e.preventDefault()
+      dispatch( puntoSetActive(row) )
+      navigate(`/informacionPunto/${row.id}`)
+      
+    }
+    
   return (
     <TableCell align="left">
                           <button
                             type="button"
                             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-1 rounded"
+                            onClick={handleInformation}
                           >
                             <InformationCircleIcon className="h-4 w-4" aria-hidden="true" />
                           </button>

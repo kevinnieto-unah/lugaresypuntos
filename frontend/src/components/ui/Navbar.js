@@ -4,17 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LogoutIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 import { startLogout } from '../../actions/auth';
-import { puntoLogout } from '../../actions/puntos';
-import { temporalesLogout } from '../../actions/temporales';
-import { lugaresLogout } from '../../actions/lugares';
 
 export const Navbar = () => {
   const { name } = useSelector( state => state.auth );
   const dispatch = useDispatch();
     const handleLogout = (e) => {
-        dispatch(puntoLogout())
-        dispatch(temporalesLogout())
-        dispatch(lugaresLogout())
+
         dispatch(startLogout())
     }
   return (

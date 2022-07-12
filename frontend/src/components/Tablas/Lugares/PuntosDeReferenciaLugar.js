@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 
 export const PuntosDeReferenciaLugar = () => {
-
+  
   const { puntosTemporales } = useSelector( state => state.temporales )
     return (
     <>

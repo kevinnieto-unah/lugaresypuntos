@@ -3,16 +3,18 @@ import { TableCell } from '@mui/material'
 import React from 'react'
 
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { lugarSetActive, lugarStartDelete } from '../../../actions/lugares'
-import {  startPuntosCargados } from '../../../actions/temporales'
-import { uiOpenModal } from '../../../actions/ui'
+import { lugarSetActive, lugarStartDelete} from '../../../actions/lugares'
+import { startPuntosCargados } from '../../../actions/temporales'
+import {  uiOpenModal } from '../../../actions/ui'
 
 
 
 export const Acciones = ({row}) => {
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const handleEdit = (e) => {
     e.preventDefault()
@@ -27,13 +29,14 @@ export const Acciones = ({row}) => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch( lugarSetActive(row)   )
-        console.log(row.id);
         // const puntosActive= row.puntos  
         // puntosActive.map((row)=>(
         //   dispatch(addPuntosTemporales(row))
         // ))
         dispatch( startPuntosCargados(row.id)   )
         dispatch( uiOpenModal() )
+        
+        
         
       }
       
@@ -68,7 +71,14 @@ export const Acciones = ({row}) => {
      
   }
   
-
+  const handleInformation = (e) => {
+    e.preventDefault()
+    dispatch( lugarSetActive(row) )
+    dispatch( startPuntosCargados(row.id)   ) 
+    navigate(`/informacion/${row.id}`)
+    
+  }
+  
 
 
   return (
@@ -76,7 +86,7 @@ export const Acciones = ({row}) => {
         <button
           type="button"
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-1 rounded"
-       
+          onClick={handleInformation}
         >
           <InformationCircleIcon className="h-4 w-4" aria-hidden="true" />
         </button>

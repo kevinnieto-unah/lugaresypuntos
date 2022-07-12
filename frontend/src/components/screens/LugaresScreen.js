@@ -1,26 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import {
   PlusIcon,
 } from "@heroicons/react/outline";
 import { Modal } from "../modals/Modal";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Buscador } from "../ui/Buscador";
 import { TablaPrincipal } from "../Tablas/Lugares/TablaPrincipal";
-import { uiOpenModal } from "../../actions/ui";
-import { lugarStartLoading } from "../../actions/lugares";
-import { Loading } from "../ui/Loading";
+import { startLoading, uiOpenModal } from "../../actions/ui";
+
 
 
 export const LugaresScreen = () => {
   const dispatch = useDispatch();
-  const [checking, setchecking] = useState(true);
-    useEffect(() => {
-      dispatch( lugarStartLoading() );  
-      setchecking(false)
+  const { lugares } = useSelector( state => state.lugares ); 
+
+  useEffect(() => {
+      if (lugares === []) {
+        dispatch(startLoading())
+      }
+
+
        
-  }, [ dispatch, setchecking ]);
+  }, [ dispatch, lugares ]);
 
   const modalTipo= 'nuevoOEditar'
     const handleClickNew = () => {
@@ -38,9 +41,6 @@ export const LugaresScreen = () => {
   //   console.log('edit')
   // }
 
-  if (checking) {
-    return(<Loading/>)
-  }
 
 
   return (

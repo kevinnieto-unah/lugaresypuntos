@@ -5,9 +5,9 @@ import Swal from "sweetalert2";
 export const lugarStartAddNew = ( lugar ) => {
 
   return async( dispatch, getState ) => {
-
+      dispatch(startLoadingLugar()) 
       try {
-
+          
           ///Solicita el token(endponit, payload, tipo de Peticion)
           const resp = await fetchFirebase( 'newLugar', lugar, 'POST');
           const body = await resp.json();
@@ -20,6 +20,8 @@ export const lugarStartAddNew = ( lugar ) => {
       } catch (error) {
           console.log(error);
       }
+
+      dispatch(finishLoadingLugar())
   }
 }
 
@@ -35,7 +37,7 @@ export const lugarSetActive = (lugar) => ({
 
 export const lugarStartUpdate = ( lugar ) => {
   return async(dispatch) => {
-
+      dispatch(startLoadingLugar()) 
       try {
           const resp = await fetchFirebase(`updateLugar/${ lugar.id }`, lugar, 'PUT' );
           const body = await resp.json();
@@ -48,6 +50,7 @@ export const lugarStartUpdate = ( lugar ) => {
       } catch (error) {
           console.log(error)
       }
+      dispatch(finishLoadingLugar())
   }
 }
 
@@ -60,11 +63,18 @@ export const lugarUpdated = ( lugar ) => ({
 export const eventClearActiveLugar = () => ({ 
   type: types.eventClearActiveLugar });
 
+export const startLoadingLugar = () => ({ 
+  type: types.startLoadingLugar });
+
+export const finishLoadingLugar = () => ({ 
+  type: types.finishLoadingLugar });
+
 
 //ELIMINAR EVENTO
 export const lugarStartDelete = () => {
   return async ( dispatch, getState ) => {
-      const { id } = getState().lugares.activeLugar;
+    dispatch(startLoadingLugar())  
+    const { id } = getState().lugares.activeLugar;
       
        try {
            const resp = await fetchFirebase(`deleteLugar/${ id }`, {}, 'DELETE' );
@@ -80,6 +90,8 @@ export const lugarStartDelete = () => {
        } catch (error) {
            console.log(error)
        }
+       dispatch(finishLoadingLugar())
+
 
   }
 }
@@ -91,14 +103,14 @@ export const lugarDeleted = (lugar) => ({
 // export const deletePuntosActiveLugar = (lugar) => ({ 
 //   type: types.deletePuntosActiveLugar });
 
-  export const lugaresLogout = () => ({
-    type: types.lugaresLogoutCleaning
-  });
+
 
   //CARGAR EVENTOS
 export const lugarStartLoading = () => {
   return async(dispatch) => {
-      try {           
+     
+      try {  
+            
           const resp = await fetchFirebase( 'obtenerLugares', {}, 'GET' );
           const body = await resp.json();
           dispatch( lugarLoaded( body ) );
@@ -107,8 +119,54 @@ export const lugarStartLoading = () => {
       }
   }
 }
+
+export const lugarLoadingTipo = (tipo) => {
+  return async(dispatch) => {
+      try {  
+            
+          const resp = await fetchFirebase( `buscarLugarPorTipo/${ tipo }`, {}, 'GET' );
+          const body = await resp.json();
+          dispatch( lugarLoaded( body ) );
+      } catch (error) {
+          console.log(error)
+      }
+  }
+
+}
+
+export const lugarLoadingNombre = (arregloDeBusqueda) => {
+  return async(dispatch) => {
+    
+      try {  
+          
+          dispatch( lugarLoaded( arregloDeBusqueda ) );
+      } catch (error) {
+          console.log(error)
+      }
+  }
+
+}
+
+export const obtenerLugarporId = (id) => {
+  return async(dispatch) => {
+    
+      try {  
+          
+          const resp = await fetchFirebase( `obtenerLugarporId/${ id }`, {}, 'GET' );
+          const body = await resp.json();
+          dispatch( lugarSetActive( body ) );
+      } catch (error) {
+          console.log(error)
+      }
+  }
+
+}
+
 const lugarLoaded = (lugares) => ({
   type: types.lugarLoaded,
   payload: lugares
 })
-  
+
+
+export const search = (lugar) => ({ 
+  type: types.search });

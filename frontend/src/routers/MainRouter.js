@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { InformacionLugarScreen } from '../components/screens/InformacionLugarScreen'
+import { InformacionPuntoScreen } from '../components/screens/InformacionPuntoScreen'
 import { LugaresScreen } from '../components/screens/LugaresScreen'
 import { PuntosScreen } from '../components/screens/PuntosScreen'
 import { Navbar } from '../components/ui/Navbar'
@@ -18,7 +19,11 @@ export const MainRouter = () => {
                  <Route exact path='/informacion/:id' 
                    element={<InformacionLugarScreen/>  }                       
                  />
-                 <Route exact path='/' 
+                 <Route exact path='/informacionPunto/:id' 
+                   element={<InformacionPuntoScreen/>  }                       
+                 />
+
+                 <Route exact path='/*' 
                    element={<LugaresScreen/>  }                      
                  />
                  

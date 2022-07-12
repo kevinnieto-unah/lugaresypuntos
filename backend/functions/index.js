@@ -263,18 +263,26 @@ exports.obtenerLugarporId = functions.https.onRequest( (request, response) => {
 exports.buscarLugarPorNombre = functions.https.onRequest( (request, response) => {
   cors(request, response, () => {
     (async () => {
+      
       const extractor = request.params[0]
       // Le quita el / del inicio
       const nombre= extractor.split("/")[1]
         try {
+          const lugaresObtenidos =[]
           db.collection("lugares").where("nombre", "==", nombre)
           .get()
           .then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
               // doc.data() is never undefined for query doc snapshots
-              const respuesta= doc.data();
-              return response.status(200).json(respuesta); 
+              lugaresObtenidos.push({
+                id: doc.id,
+                ...doc.data(),
+                
+
+              })
+
           });
+          return response.status(200).json(lugaresObtenidos);
       })
           
         } catch (error) {
@@ -301,7 +309,10 @@ exports.buscarLugarPorTipo = functions.https.onRequest( (request, response) => {
           querySnapshot.forEach(function(doc) {
               // doc.data() is never undefined for query doc snapshots
               lugaresObtenidos.push({
-                ...doc.data()
+                id: doc.id,
+                ...doc.data(),
+                
+
               })
                
           });

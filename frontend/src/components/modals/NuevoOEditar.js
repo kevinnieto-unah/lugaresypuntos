@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 import { useDispatch } from "react-redux";
-import { uiCloseModal } from "../../actions/ui";
+import { finishLoading, startLoading, uiCloseModal } from "../../actions/ui";
 import { PuntosAgregar } from "../helpers/PuntosAgregar";
 
 import { useSelector } from "react-redux";
@@ -46,7 +46,12 @@ export const NuevoOEditar = () => {
             setFormValues( initLugar );
     
           }
-      }, [activeLugar, setFormValues, dispatch])
+          if(puntosTemporales !== []){
+            console.log("Tiene los puntos temporales");
+          }
+
+
+      }, [activeLugar, setFormValues, dispatch,puntosTemporales])
 
    //FUNCION MANEJADORA DE CAMPOS DEL FORMULARIO
 
@@ -73,11 +78,13 @@ export const NuevoOEditar = () => {
         puntos: puntosTemporales,
         numeroDePuntos: contador,
       }
-      console.log(lugarActualizado);
+      dispatch(startLoading())
       dispatch( lugarStartUpdate( lugarActualizado ) )
       dispatch( eventClearActiveLugar() );
       dispatch(clearActivePuntosTemporales());
+      dispatch(finishLoading())
       dispatch(uiCloseModal());
+
       Swal.fire(
         'Lugar actualizado con exito!',
         '',
@@ -111,11 +118,13 @@ export const NuevoOEditar = () => {
           puntos: puntosTemporales,
           numeroDePuntos: contador
         }
+        dispatch(startLoading())
         dispatch( lugarStartAddNew(envio) );
       
         setFormValues( initLugar );
         dispatch(clearActivePuntosTemporales());
         dispatch(uiCloseModal());
+        dispatch(finishLoading())
       }
       
     })
@@ -245,15 +254,15 @@ export const NuevoOEditar = () => {
                               <option value={"-"}>
                                 -Tipo de Lugar-
                               </option>
-                              <option value="Colonia">Colonia</option>
-                              <option value="Centros Comercial">
-                                Centros Comerciales
+                              <option value="colonia">Colonia</option>
+                              <option value="centro-comercial">
+                                Centro Comercial
                               </option>
-                              <option value="Institucion Gubernamental">
-                                Instituciones Gubernamentales
+                              <option value="institucion-gubernamental">
+                                Institucion Gubernamental
                               </option>
-                              <option value="Centros Educativo">
-                                Centros Educativos
+                              <option value="centro-educativo">
+                                Centro Educativo
                               </option>
                             </select>
                           </div>

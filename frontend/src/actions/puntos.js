@@ -2,10 +2,18 @@ import { fetchFirebase } from "../helpers/fetch";
 import { types } from "../types/types"
 import Swal from "sweetalert2";
 
+export const startLoadingPunto = () => ({ 
+  type: types.startLoadingPunto });
+
+export const finishLoadingPunto = () => ({ 
+  type: types.finishLoadingPunto });
+
+
 export const puntoStartAddNew = ( punto ) => {
+  
 
   return async( dispatch, getState ) => {
-
+      dispatch(startLoadingPunto())
       try {
 
           ///Solicita el token(endponit, payload, tipo de Peticion)
@@ -20,6 +28,7 @@ export const puntoStartAddNew = ( punto ) => {
       } catch (error) {
           console.log(error);
       }
+      dispatch(finishLoadingPunto())
   }
 }
 
@@ -35,7 +44,7 @@ export const puntoSetActive = (punto) => ({
 
 export const puntoStartUpdate = ( punto ) => {
   return async(dispatch) => {
-
+      dispatch(startLoadingPunto())
       try {
           const resp = await fetchFirebase(`updatePunto/${ punto.id }`, punto, 'PUT' );
           const body = await resp.json();
@@ -48,6 +57,7 @@ export const puntoStartUpdate = ( punto ) => {
       } catch (error) {
           console.log(error)
       }
+      dispatch(finishLoadingPunto())
   }
 }
 
@@ -64,6 +74,7 @@ export const eventClearActivePunto = () => ({ type: types.eventClearActivePunto 
 //ELIMINAR EVENTO
 export const puntoStartDelete = () => {
   return async ( dispatch, getState ) => {
+      dispatch(startLoadingPunto())
       const { id } = getState().puntos.activePunto;
       
        try {
@@ -80,6 +91,7 @@ export const puntoStartDelete = () => {
        } catch (error) {
            console.log(error)
        }
+       dispatch(finishLoadingPunto())
 
   }
 }

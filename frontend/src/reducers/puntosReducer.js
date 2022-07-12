@@ -3,6 +3,7 @@ import { types } from "../types/types";
 const initialState ={
     puntos: [ ],
     activePunto: null,
+    loadingPunto: false
 
 }
 
@@ -14,6 +15,16 @@ export const puntosReducer =(state=initialState,action)=>{
                 ...state,
                 activePunto: action.payload,
            
+            }
+        case types.startLoadingPunto:
+            return {
+                ...state,
+                loadingPunto: true
+            }
+        case types.finishLoadingPunto:
+            return {
+                ...state,
+                loadingPunto: false
             }
 
 
