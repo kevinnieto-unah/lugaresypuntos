@@ -10,7 +10,6 @@ import {
 
 } from "@react-google-maps/api";
 import { Marker } from "@react-google-maps/api";
-import mapStyles from '../../mapStyles';
 import { BannerMapa } from '../ui/BannerMapa';
 import { BannerInformacion } from '../ui/BannerInformacion';
 import Swal from 'sweetalert2';
@@ -25,7 +24,6 @@ const containerStyle = {
 
 
 const options = {
-  styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
 };
