@@ -59,14 +59,7 @@ export const LugaresScreen = () => {
 
 
 
-      <div className="pt-3 flex justify-center max-w-5xl mx-auto">
-        <button
-          type="button"
-          className="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-        >
-          Cargar mas...
-        </button>
-      </div>
+      
       <div className="fixed bottom-0 w-full drop-shadow-lg">
         <button
           className="h-20 w-20 bottom-0 my-8 float-right mb-10 mr-10 px-5 py-2 bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold tracking-wide rounded-full focus:outline-none"

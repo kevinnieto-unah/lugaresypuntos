@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { lugarLoadingNombre, lugarLoadingTipo, lugarStartLoading} from '../../actions/lugares';
+import { finishLoadingLugar, lugarLoadingNombre, lugarLoadingTipo, lugarStartLoading, startLoadingLugar} from '../../actions/lugares';
 import queryString from 'query-string'
 import { useForm } from '../../hooks/UseForm';
 import { getLugarByName } from '../../selectors/getLugarByName';
+import Swal from 'sweetalert2';
 //import { finishLoading, startLoading } from '../../actions/ui';
 
 
@@ -41,7 +42,16 @@ export const Buscador = () => {
 			tipoLugar: 'todos',
 		})
 		navigate('/')
+		dispatch(startLoadingLugar()) 
 		dispatch( lugarStartLoading() );
+		dispatch(finishLoadingLugar()) 
+		Swal.fire({
+			position: 'center',
+			icon: 'success',
+			title: 'Filtros de busqueda actualizado!',
+			showConfirmButton: false,
+			timer: 800
+		  })
 	
 	}
 	useEffect(() => {

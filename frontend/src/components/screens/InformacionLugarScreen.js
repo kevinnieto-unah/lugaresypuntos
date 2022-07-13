@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { eventClearActiveLugar} from '../../actions/lugares';
@@ -11,6 +11,9 @@ import {
 } from "@react-google-maps/api";
 import { Marker } from "@react-google-maps/api";
 import mapStyles from '../../mapStyles';
+import { BannerMapa } from '../ui/BannerMapa';
+import { BannerInformacion } from '../ui/BannerInformacion';
+import Swal from 'sweetalert2';
 
 
 
@@ -34,6 +37,7 @@ export const InformacionLugarScreen = () => {
   const { activeLugar } = useSelector( state => state.lugares );
   const { puntosTemporales } = useSelector( state => state.temporales );
   const {id, nombre, latitud,longitud,rango, tipo, disponibilidad } = activeLugar;
+  const [tocado, setTocado] = useState(true);
   let disponible =''
   let tipoLugar =''
   const newLatitud = parseFloat(latitud)
@@ -72,6 +76,8 @@ export const InformacionLugarScreen = () => {
       navigate('/')
     }
 
+   
+
   //GOOGLE MAPS 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyCSq_3C4tfeMTc5K1zJWEEKbaDD0jJ6R5A",
@@ -86,14 +92,26 @@ export const InformacionLugarScreen = () => {
   //     setWidth(width)
   //   })
   const onMapMarker = React.useCallback((e) => {
-    setMarkers((current) => [
-      ...current,
-      {
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
-      },
-    ]);
-  }, []);
+    if (tocado) {
+      setMarkers((current) => [
+        ...current,
+        {
+          lat: e.latLng.lat(),
+          lng: e.latLng.lng(),
+        },
+      ]);
+      setTocado(false)
+    }else{
+      Swal.fire({
+        icon: 'success',
+        title: 'Lugar visualizado',
+        text: 'Ya tienes toda la informacion necesaria en pantalla',
+      })
+    }
+    
+  }, [tocado]);
+
+
 
   if (loadError) return "Error";
   if (!isLoaded) return "Cargando...";
@@ -107,6 +125,9 @@ export const InformacionLugarScreen = () => {
           Informacion del Lugar
         </h1>
       </div>
+      { (tocado)? <BannerMapa/> : <BannerInformacion/>
+          
+        } 
       <div className="max-w-7xl mx-auto px-2 mt-30 sm:px-6 lg:px-8">
             {/* Description and details */}
             {/* AQUI COMIENZA */}
@@ -136,15 +157,19 @@ export const InformacionLugarScreen = () => {
                                     <Marker
                                       key={id}
                                       position={center}
-                                  
-                                      icon={{
-                                        url: `../assets/IconPlaceRed.png`,
-                                        origin: new window.google.maps.Point(0, 0),
-                                        anchor: new window.google.maps.Point(15, 15),
-                                        scaledSize: new window.google.maps.Size(40, 50),
-                                      }}
+                                   
+                  
                                     />
                                   ))}
+                                  {puntosTemporales.map((marker) => (
+                                    <Marker
+                                      key={marker.id}
+                                      position={{lat: parseFloat(marker.latitud), lng: parseFloat(marker.longitud)}}
+                        
+                  
+                                    />
+                                  ))}
+                          
 
                       
 

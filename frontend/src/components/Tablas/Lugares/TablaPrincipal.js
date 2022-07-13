@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,15 +13,20 @@ import { CeldaLugares } from './CeldaLugares';
 
 export const TablaPrincipal = () => {
     const { lugares } = useSelector( state => state.lugares ); 
-
+    const [listItems, setListItems] = useState(5);
    
 
-    //PARTE DEL SWEET ALERT DEL BORRAR
-
-
+    
+    const handleMostrarMas = (e) => {
+      e.preventDefault()
+      setListItems(listItems + 5)
+      console.log("Lugares:",lugares.length)
+      console.log("List Item:",listItems)
+    }
 
 
   return (
+   <>
     <div className="pt-3 flex justify-center max-w-5xl mx-auto">
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -36,12 +41,39 @@ export const TablaPrincipal = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {lugares.map((row) => (
-                  <CeldaLugares key={row.id} row={row}/>
-              ))}
+            
+            {
+                lugares.slice(0, listItems).map(rec => (
+                  <CeldaLugares key={rec.id} row={rec}/>
+                ))
+                
+              }
+              
+              
+              {/* // lugares.map((row) => (
+              //     <CeldaLugares key={row.id} row={row}/>
+              // ))
+               */}
+              
             </TableBody>
           </Table>
         </TableContainer>
+        
       </div>
+      <div className="pt-3 flex justify-center max-w-5xl mx-auto">
+        {
+            listItems< lugares.length ?
+            <button
+            type="button"
+            className="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+            onClick={handleMostrarMas}
+                
+          >
+            Cargar mas...
+          </button>
+          :null
+        }
+        </div>
+   </> 
   )
 }
