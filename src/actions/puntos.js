@@ -17,7 +17,7 @@ export const puntoStartAddNew = ( punto ) => {
       try {
 
           ///Solicita el token(endponit, payload, tipo de Peticion)
-          const resp = await fetchFirebase( '/puntos', punto, 'POST');
+          const resp = await fetchFirebase( 'puntos', punto, 'POST');
           const body = await resp.json();
           const {id}= body.punto
            if ( body.ok ) {
@@ -46,7 +46,7 @@ export const puntoStartUpdate = ( punto ) => {
   return async(dispatch) => {
       dispatch(startLoadingPunto())
       try {
-          const resp = await fetchFirebase(`/puntos/${ punto.id }`, punto, 'PUT' );
+          const resp = await fetchFirebase(`puntos/${ punto.id }`, punto, 'PUT' );
           const body = await resp.json();
 
           if ( body.ok ) {
@@ -78,7 +78,7 @@ export const puntoStartDelete = () => {
       const { id } = getState().puntos.activePunto;
     
        try {
-           const resp = await fetchFirebase(`/puntos/${ id }`, {}, 'DELETE' );
+           const resp = await fetchFirebase(`puntos/${ id }`, {}, 'DELETE' );
            const body = await resp.json();
 
            if ( body.ok ) {
@@ -106,7 +106,7 @@ export const puntoDeleted = (punto) => ({ type: types.puntoDeleted });
 export const puntoStartLoading = () => {
   return async(dispatch) => {
       try {           
-          const resp = await fetchFirebase( '/puntos', {}, 'GET' );
+          const resp = await fetchFirebase( 'puntos', {}, 'GET' );
           const body = await resp.json();
           dispatch( puntoLoaded( body ) );
       } catch (error) {

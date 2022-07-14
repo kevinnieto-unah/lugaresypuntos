@@ -24,7 +24,7 @@ export const addPuntosTemporales = (punto) => ({
       
         try {  
             dispatch(startLoadingTemporal())         
-            const resp = await fetchFirebase( `/lugares/puntos/${ id }`, {}, 'GET' );
+            const resp = await fetchFirebase( `lugares/puntos/${ id }`, {}, 'GET' );
             const body = await resp.json(); 
             console.log(body);
             dispatch( puntosCargados( body ) );

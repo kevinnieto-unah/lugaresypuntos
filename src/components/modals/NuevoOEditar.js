@@ -38,13 +38,7 @@ export const NuevoOEditar = () => {
         useEffect(() => {
           if ( activeLugar ) {
             setFormValues( activeLugar );
-            
-    
-    
 
-          } else {
-            setFormValues( initLugar );
-    
           }
           if(puntosTemporales !== []){
             console.log("Tiene los puntos temporales");
@@ -106,9 +100,9 @@ export const NuevoOEditar = () => {
           '',
           'success'
         )
+        dispatch( cleanPuntosTemporales() );
         const contador= puntosTemporales.length;
         const {nombre, latitud, longitud, rango, tipo, disponibilidad } = formValues
-
         const envio ={
           nombre, 
           latitud, 
@@ -119,6 +113,7 @@ export const NuevoOEditar = () => {
           puntos: puntosTemporales,
           numeroDePuntos: contador
         }
+
         dispatch(startLoading())
         dispatch( lugarStartAddNew(envio) );
       
