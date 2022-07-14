@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { eventClearActiveLugar} from '../../actions/lugares';
-import { temporalesLogout } from '../../actions/temporales';
-
 import {
   GoogleMap,
   useLoadScript,
@@ -13,6 +10,7 @@ import { Marker } from "@react-google-maps/api";
 import Swal from 'sweetalert2';
 import { BannerMapa } from '../ui/BannerMapa';
 import { BannerInformacion } from '../ui/BannerInformacion';
+import { eventClearActivePunto } from '../../actions/puntos';
 
 
 
@@ -49,9 +47,8 @@ export const InformacionPuntoScreen = () => {
     const navigate = useNavigate()
     const handleReturn = (e) => {
       e.preventDefault()
-      dispatch(eventClearActiveLugar())
-      dispatch(temporalesLogout())
-      navigate('/')
+      dispatch(eventClearActivePunto())
+      navigate('/puntos')
     }
 
   //GOOGLE MAPS 

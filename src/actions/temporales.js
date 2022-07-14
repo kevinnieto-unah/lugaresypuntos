@@ -8,17 +8,9 @@ export const addPuntosTemporales = (punto) => ({
   export const deletePuntosTemporales = (punto) => ({ 
     type: types.deletePuntosTemporales });
   
-  export const clearActivePuntosTemporales = () => ({ 
-    type: types.clearActivePuntosTemporales });
+  export const cleanPuntosTemporales = () => ({ 
+    type: types.cleanPuntosTemporales });
   
-  export const setActivePuntoTemporal = (punto) => ({
-    type: types.setActivePuntoTemporal,
-    payload: punto
-  });
-
-  export const temporalesLogout = () => ({
-    type: types.temporalesLogoutCleaning
-  });
 
   export const startLoadingTemporal = () => ({ 
     type: types.startLoadingTemporal });
@@ -32,7 +24,7 @@ export const addPuntosTemporales = (punto) => ({
       
         try {  
             dispatch(startLoadingTemporal())         
-            const resp = await fetchFirebase( `getPuntosDeReferenciaLugar/${ id }`, {}, 'GET' );
+            const resp = await fetchFirebase( `/lugares/puntos/${ id }`, {}, 'GET' );
             const body = await resp.json(); 
             console.log(body);
             dispatch( puntosCargados( body ) );

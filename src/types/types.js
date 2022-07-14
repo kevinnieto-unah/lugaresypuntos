@@ -37,12 +37,9 @@ export const types = {
 
     //LUGARES TEMPORALES
     addPuntosTemporales: '[Lugares] Nuevo lugar tempora',
-    setActivePuntoTemporal: '[Lugares] Set active lugar',
-    clearActivePuntoTemporal: '[event] Clear active event',
     deletePuntosTemporales: '[Lugares] Delete lugar temporal',
-    clearActivePuntosTemporales: '[Lugares] Limpia puntos temporales',
-    temporalesLogoutCleaning: '[Lugares] Logout Cleaning',
     puntosCargados: '[Lugares] Cargar Puntos',
+    cleanPuntosTemporales: '[Lugares] Limpia los puntos temporales',
 
 
     finishLoadingTemporal: '[Temporales] Finish Loading Temporal',
@@ -52,8 +49,6 @@ export const types = {
     //Tipos del login
     login: '[Auth] Login',
     logout: '[Auth] Logout',
-
-    search: '[Busqueda] Inicio Busqueda'
 
 
 }

@@ -2,24 +2,23 @@ import { types } from "../types/types";
 
 const initialState ={
     puntosTemporales:[],
-    temporalActive: [],
     loadingTemporal: false
 
 }
 
 export const temporalesReducer =(state=initialState,action)=>{
     switch (action.type) {
-        case types.setActivePuntoTemporal:
-                return {
-                    ...state,
-                    temporalActive: action.payload
-                }
-
+       
         case types.deletePuntosTemporales:
             return {
                 ...state,
                 puntosTemporales: [...state.puntosTemporales.splice(0, action.payload), ...state.puntosTemporales.splice(1)],
             }
+        case types.cleanPuntosTemporales:
+                return {
+                    ...state,
+                    puntosTemporales: [],
+                }
         case types.startLoadingTemporal:
             return {
                 ...state,
@@ -30,12 +29,6 @@ export const temporalesReducer =(state=initialState,action)=>{
                 ...state,
                 loadingTemporal: false
             }
-        
-        case types.clearActivePuntosTemporales:
-                    return {
-                        puntosTemporales: [],
-                        temporalActive: []
-                    } 
                     
             
         case types.addPuntosTemporales:
@@ -45,12 +38,6 @@ export const temporalesReducer =(state=initialState,action)=>{
               
             }
 
-        case types.temporalesLogoutCleaning:
-            return {
-                ...state,
-                puntosTemporales:[],
-                temporalActive: []
-            }
         case types.puntosCargados:
             return {
                 ...state,

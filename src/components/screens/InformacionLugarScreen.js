@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { eventClearActiveLugar} from '../../actions/lugares';
-import { temporalesLogout } from '../../actions/temporales';
 import { TablaDePuntos } from '../Tablas/Puntos/TablaDePuntos';
 import {
   GoogleMap,
@@ -13,6 +12,7 @@ import { Marker } from "@react-google-maps/api";
 import { BannerMapa } from '../ui/BannerMapa';
 import { BannerInformacion } from '../ui/BannerInformacion';
 import Swal from 'sweetalert2';
+import { cleanPuntosTemporales } from '../../actions/temporales';
 
 
 
@@ -70,7 +70,7 @@ export const InformacionLugarScreen = () => {
     const handleReturn = (e) => {
       e.preventDefault()
       dispatch(eventClearActiveLugar())
-      dispatch(temporalesLogout())
+      dispatch( cleanPuntosTemporales() );
       navigate('/')
     }
 

@@ -8,8 +8,8 @@ import { PuntosAgregar } from "../helpers/PuntosAgregar";
 import { useSelector } from "react-redux";
 import { PuntosDeReferenciaLugar } from "../Tablas/Lugares/PuntosDeReferenciaLugar";
 import { eventClearActiveLugar, lugarStartAddNew, lugarStartUpdate } from "../../actions/lugares";
-import {clearActivePuntosTemporales } from "../../actions/temporales";
 import Swal from "sweetalert2";
+import { cleanPuntosTemporales } from "../../actions/temporales";
 
 const initLugar = {
   nombre: '',
@@ -64,8 +64,8 @@ export const NuevoOEditar = () => {
   // FUNCION PARA  CERRAR EL MODAL
   const closeModal = () => {
     dispatch(uiCloseModal());
-    dispatch(clearActivePuntosTemporales())
     dispatch(eventClearActiveLugar());
+    dispatch( cleanPuntosTemporales() );
     
 
   };
@@ -81,9 +81,10 @@ export const NuevoOEditar = () => {
       dispatch(startLoading())
       dispatch( lugarStartUpdate( lugarActualizado ) )
       dispatch( eventClearActiveLugar() );
-      dispatch(clearActivePuntosTemporales());
+      dispatch( cleanPuntosTemporales() );
       dispatch(finishLoading())
       dispatch(uiCloseModal());
+      
 
       Swal.fire(
         'Lugar actualizado con exito!',
@@ -122,7 +123,7 @@ export const NuevoOEditar = () => {
         dispatch( lugarStartAddNew(envio) );
       
         setFormValues( initLugar );
-        dispatch(clearActivePuntosTemporales());
+
         dispatch(uiCloseModal());
         dispatch(finishLoading())
       }

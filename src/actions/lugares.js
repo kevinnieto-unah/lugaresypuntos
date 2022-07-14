@@ -9,7 +9,7 @@ export const lugarStartAddNew = ( lugar ) => {
       try {
           
           ///Solicita el token(endponit, payload, tipo de Peticion)
-          const resp = await fetchFirebase( 'newLugar', lugar, 'POST');
+          const resp = await fetchFirebase( '/lugares', lugar, 'POST');
           const body = await resp.json();
           const {id}= body.lugar
            if ( body.ok ) {
@@ -39,7 +39,7 @@ export const lugarStartUpdate = ( lugar ) => {
   return async(dispatch) => {
       dispatch(startLoadingLugar()) 
       try {
-          const resp = await fetchFirebase(`updateLugar/${ lugar.id }`, lugar, 'PUT' );
+          const resp = await fetchFirebase(`/lugares/${ lugar.id }`, lugar, 'PUT' );
           const body = await resp.json();
 
           if ( body.ok ) {
@@ -77,7 +77,7 @@ export const lugarStartDelete = () => {
     const { id } = getState().lugares.activeLugar;
       
        try {
-           const resp = await fetchFirebase(`deleteLugar/${ id }`, {}, 'DELETE' );
+           const resp = await fetchFirebase(`/lugares/${ id }`, {}, 'DELETE' );
            const body = await resp.json();
 
            if ( body.ok ) {
@@ -111,7 +111,7 @@ export const lugarStartLoading = () => {
      
       try {  
             
-          const resp = await fetchFirebase( 'obtenerLugares', {}, 'GET' );
+          const resp = await fetchFirebase( '/lugares', {}, 'GET' );
           const body = await resp.json();
           dispatch( lugarLoaded( body ) );
       } catch (error) {
@@ -124,7 +124,7 @@ export const lugarLoadingTipo = (tipo) => {
   return async(dispatch) => {
       try {  
             
-          const resp = await fetchFirebase( `buscarLugarPorTipo/${ tipo }`, {}, 'GET' );
+          const resp = await fetchFirebase( `/lugares/tipo/${ tipo }`, {}, 'GET' );
           const body = await resp.json();
           dispatch( lugarLoaded( body ) );
       } catch (error) {
@@ -152,7 +152,7 @@ export const obtenerLugarporId = (id) => {
     
       try {  
           
-          const resp = await fetchFirebase( `obtenerLugarporId/${ id }`, {}, 'GET' );
+          const resp = await fetchFirebase( `/lugares/${ id }`, {}, 'GET' );
           const body = await resp.json();
           dispatch( lugarSetActive( body ) );
       } catch (error) {
